@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+    android:id="@+id/list_item_theater_name_text_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textStyle="bold"
+    android:padding="4dp"
+    tools:text="Theater Name"/>
+
+    <TextView
+        android:id="@+id/list_item_theater_distance_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_item_theater_name_text_view"
+        android:padding="4dp"
+        tools:text="Theater Distance"/>
+
+</RelativeLayout>
