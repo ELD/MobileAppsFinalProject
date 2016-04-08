@@ -7,17 +7,17 @@ different movie preferences.
 ### Feature Roadmap
 
 ###### Alpha Release
-- [  ] Display list of theaters
-- [  ] Allow user to select a theater and select movie genres
-- [  ] List movies being played on specified date at specified movie
-- [  ] List pairings of movies or genres to User
-- [  ] Rudimentary settings page allowing entry of a zipcode
+- [x] Display list of theaters
+- [ ] Allow user to select a theater and select movie genres
+- [ ] List movies being played on specified date at specified movie
+- [ ] List pairings of movies or genres to User
+- [ ] Rudimentary settings page allowing entry of a zipcode
 
 ###### Beta Release
-- [  ] Use location services to locate movies
-- [  ] Display movie synopsis on movie page
-- [  ] Better algorithm to select movie pairings
-- [  ] Polished settings page
+- [ ] Use location services to locate movies
+- [ ] Display movie synopsis on movie page
+- [ ] Better algorithm to select movie pairings
+- [ ] Polished settings page
 
 ###### Final Release
 TBD
