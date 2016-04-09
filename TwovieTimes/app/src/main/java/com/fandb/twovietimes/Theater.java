@@ -10,6 +10,7 @@ public class Theater {
     private String mName;
     //this probably won't end up being a string, but I'll make it one for now
     private String mDistance;
+    private String mAddress;
 
     public Theater(){
         //Generate unique identifier
