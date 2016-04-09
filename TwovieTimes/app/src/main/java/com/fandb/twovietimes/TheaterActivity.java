@@ -10,21 +10,31 @@ import java.util.UUID;
 /**
  * Created by Alex on 4/6/16.
  */
-public class TheaterActivity extends AppCompatActivity {
+public class TheaterActivity extends AppCompatActivity{
 
     private static final String EXTRA_THEATER_ID = "com.fandb.twovietimes.crime_id";
 
-    public static Intent newIntent(Context packageContext, UUID crimeId) {
+    private Theater mTheater;
+
+    public static Intent newIntent(Context packageContext, UUID theaterId) {
         Intent intent = new Intent(packageContext, TheaterActivity.class);
-        intent.putExtra(EXTRA_THEATER_ID, crimeId);
+        intent.putExtra(EXTRA_THEATER_ID, theaterId);
         return intent;
     }
-
+/*
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected Fragment createFragment() {
+        UUID theaterId = (UUID) getIntent().getSerializableExtra(EXTRA_THEATER_ID);
+        return TheaterFragment.newInstance(theaterId);
+    }
+*/
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_theater);
 
-        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_THEATER_ID);
+        UUID theaterId = (UUID) getIntent().getSerializableExtra(EXTRA_THEATER_ID);
+        mTheater = TheaterList.get(this).getTheater(theaterId);
     }
+
 }

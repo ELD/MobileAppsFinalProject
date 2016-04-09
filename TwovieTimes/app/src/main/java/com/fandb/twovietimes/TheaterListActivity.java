@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 /**
  * Created by Alex on 4/6/16.
  */
-public class TheaterListActivity extends SingleFragmentActivity implements TheaterListFragment.Callbacks, TheaterFragment.Callbacks{
+public class TheaterListActivity extends SingleFragmentActivity implements TheaterListFragment.Callbacks{
 
     @Override
     protected Fragment createFragment() {

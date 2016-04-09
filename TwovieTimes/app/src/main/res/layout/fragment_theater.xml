@@ -4,4 +4,74 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <GridLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGray"
+        android:id="@+id/movies_at_bar"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/movies_at_text"
+            android:id="@+id/textView"
+            android:layout_column="0"/>
+
+        <CheckBox
+            android:layout_marginLeft="20dp"
+            android:id="@+id/movies_now_checkbox"
+            android:text="@string/movies_now_text"
+            android:singleLine="false"
+            android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+
+            android:layout_gravity="right"
+            android:text="@string/movies_later_button_text"
+            android:layout_marginRight="20dp"
+            android:id="@+id/movies_later_button"
+            android:layout_row="0"
+            android:layout_column="0"/>
+
+
+    </GridLayout>
+
+    <GridLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGray"
+        android:id="@+id/select_movies_bar"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_movie_button"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/button"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/select_movie_button"
+            android:layout_marginRight="20dp"
+            android:id="@+id/button2"/>
+    </GridLayout>
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/theater_movie_times_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
 </LinearLayout>

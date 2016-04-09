@@ -1,5 +1,6 @@
 package com.fandb.twovietimes;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -11,6 +12,7 @@ public class Theater {
     //this probably won't end up being a string, but I'll make it one for now
     private String mDistance;
     private String mAddress;
+    private ArrayList <MovieTime> mMovieTimes;
 
     public Theater(){
         //Generate unique identifier
