@@ -8,9 +8,9 @@ different movie preferences.
 
 ###### Alpha Release
 - [x] Display list of theaters
-- [ ] Allow user to select a theater and select movie genres
+- [x] Allow user to select a theater and select movie genres
 - [ ] List movies being played on specified date at specified movie
-- [ ] List pairings of movies or genres to User
+- [x] List pairings of movies or genres to User
 - [ ] Rudimentary settings page allowing entry of a zipcode
 
 ###### Beta Release

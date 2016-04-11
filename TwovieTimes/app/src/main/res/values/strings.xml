@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Twovie Times</string>
-    <string name="select_movie_button">Select a movie...</string>
-    <string name="movies_later_button_text">Later...</string>
-    <string name="movies_at_text">Movies...</string>
+    <string name="select_movie_button">Select a movie</string>
+    <string name="movies_later_button_text">Later</string>
+    <string name="movies_at_text">Movies</string>
     <string name="movies_now_text">Now</string>
+    <string name="get_movies">Get Movie Times</string>
 </resources>
