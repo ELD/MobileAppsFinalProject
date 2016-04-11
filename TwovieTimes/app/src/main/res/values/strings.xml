@@ -5,4 +5,5 @@
     <string name="movies_at_text">Movies</string>
     <string name="movies_now_text">Now</string>
     <string name="get_movies">Get Movie Times</string>
+    <string name="date_picker_title">Pick a Movie Time</string>
 </resources>
