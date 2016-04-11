@@ -4,10 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +50,9 @@ public class TheaterActivity extends AppCompatActivity{
         UUID theaterId = (UUID) getIntent().getSerializableExtra(EXTRA_THEATER_ID);
         mTheater = TheaterList.get(this).getTheater(theaterId);
 
+        mMovieRecylcerView = (RecyclerView) findViewById(R.id.theater_movie_times_recycler_view);
+        mMovieRecylcerView.setLayoutManager(new LinearLayoutManager(this));
+
         mGetMoviesButton = (Button) findViewById(R.id.get_movie_times);
         mGetMoviesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,16 +63,52 @@ public class TheaterActivity extends AppCompatActivity{
 
         // TODO: Populate movie lists
         // TODO: Make DatePicker
+
+        updateUI();
+    }
+
+    public void updateUI() {
+        MoviePairList moviePairList = MoviePairList.get(this);
+        List<MoviePair> moviePairs = moviePairList.getMoviePairs();
+
+        if (mMovieAdapter == null) {
+            mMovieAdapter = new MovieAdapter(moviePairs);
+            mMovieRecylcerView.setAdapter(mMovieAdapter);
+        } else {
+            mMovieAdapter.notifyDataSetChanged();
+        }
     }
 
     private class MovieHolder extends RecyclerView.ViewHolder {
         private MoviePair mMoviePair;
+
+        private TextView mMovieOneTextView;
+        private TextView mMovieOneStart;
+        private TextView mMovieOneDuration;
+        private TextView mMovieTwoTextView;
+        private TextView mMovieTwoStart;
+        private TextView mMovieTwoDuration;
+
         public MovieHolder(View itemView) {
             super(itemView);
+
+            mMovieOneTextView = (TextView) itemView.findViewById(R.id.movie_one_title);
+            mMovieOneStart = (TextView) itemView.findViewById(R.id.movie_one_start);
+            mMovieOneDuration = (TextView) itemView.findViewById(R.id.movie_one_runtime);
+            mMovieTwoTextView = (TextView) itemView.findViewById(R.id.movie_two_title);
+            mMovieTwoStart = (TextView) itemView.findViewById(R.id.movie_two_start);
+            mMovieTwoDuration = (TextView) itemView.findViewById(R.id.movie_two_runtime);
         }
 
         public void bindMovieTime(MoviePair pair) {
             mMoviePair = pair;
+
+            mMovieOneTextView.setText(mMoviePair.getMovieOne());
+            mMovieOneStart.setText(mMoviePair.getMovieOneStart().toString());
+            mMovieOneDuration.setText(mMoviePair.getMovieOneDuration().toString());
+            mMovieTwoTextView.setText(mMoviePair.getMovieTwo());
+            mMovieTwoStart.setText(mMoviePair.getMovieTwoStart().toString());
+            mMovieTwoDuration.setText(mMoviePair.getMovieTwoDuration().toString());
         }
     }
 
@@ -76,7 +121,9 @@ public class TheaterActivity extends AppCompatActivity{
 
         @Override
         public MovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return null;
+            LayoutInflater layoutInflater = LayoutInflater.from(TheaterActivity.this);
+            View view = layoutInflater.inflate(R.layout.list_item_movie_pairing, parent, false);
+            return new MovieHolder(view);
         }
 
         @Override
