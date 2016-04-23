@@ -12,6 +12,7 @@ public class Theater {
     //this probably won't end up being a string, but I'll make it one for now
     private String mDistance;
     private String mAddress;
+    private String mAPIId;
     private ArrayList <MovieTime> mMovieTimes;
 
     public Theater(){
