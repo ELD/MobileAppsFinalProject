@@ -40,6 +40,7 @@ public class APIHandler {
     public static final String API_KEY = "9mdax3qa5xncse6gmc6bccyq";
     public static final String TAG = "APIHANDLER";
 
+    public static boolean mInit = false;
     public static String mTheatreId;
     //Title -> Movie
     public static HashMap<String, Movie> mMovies = new HashMap<String, Movie>();
@@ -175,6 +176,7 @@ public class APIHandler {
     }
 
     public static void init(){
+        if(mInit == true) return;
         String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
 
         Gson gson = new Gson();
@@ -184,6 +186,8 @@ public class APIHandler {
         populateTheatres(mts);
         populateMovies(mts);
         populateMovieTimes(mts);
+
+        mInit = true;
     }
 
     public static ArrayList<Theater> getTheaters(){
