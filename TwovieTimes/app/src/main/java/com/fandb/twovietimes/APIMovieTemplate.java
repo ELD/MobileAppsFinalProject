@@ -24,10 +24,10 @@ public class APIMovieTemplate {
         private String value;
     }
 
-    private class ratings{
+    public class ratings{
 
         private String body;
-        private String code;
+        public String code;
         @Override
         public String toString() {
             return "ratings [body=" + body + ", code=" + code + "]";
@@ -70,7 +70,7 @@ public class APIMovieTemplate {
         }
 
         public theatre theatre;
-        private String dateTime;
+        public String dateTime;
         private String quals;
         private String barg;
         private String ticketURI;
@@ -85,7 +85,7 @@ public class APIMovieTemplate {
     private String tmsId;
     private String rootId;
     private String subType;
-    private String title;
+    public String title;
     private String releaseYear;
     private String releaseDate;
     private String titleLang;
@@ -98,9 +98,9 @@ public class APIMovieTemplate {
     private String[] directors;
     private String officalUrl;
     private qualityRating qualityRating;
-    private ratings[] ratings;
+    public ratings[] ratings;
     private String[] advisories;
-    private String runTime;
+    public String runTime;
     private preferredImage preferredImage;
     public showtimes[] showtimes;
 

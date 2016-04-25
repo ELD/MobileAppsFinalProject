@@ -7,6 +7,13 @@ import java.util.Date;
  */
 public class MovieTime {
 
+    MovieTime(String tit, Rating r, Date st, Date en, Integer dur){
+        mTitle = tit;
+        mRating = r;
+        mStartTime = st;
+        mEndTime = en;
+        mDuration = dur;
+    }
     private String mTitle;
     private Rating mRating;
     private Date mStartTime;

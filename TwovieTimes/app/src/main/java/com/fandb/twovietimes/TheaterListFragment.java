@@ -110,7 +110,6 @@ public class TheaterListFragment extends Fragment {
         }
     }
 
-
     private class TheaterHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private Theater mTheater;
