@@ -39,6 +39,8 @@ public class APIHandler {
     public static final String API_KEY = "9mdax3qa5xncse6gmc6bccyq";
     public static final String TAG = "APIHANDLER";
 
+    public static String mTheatreId;
+
     public static String[] getAddress(URL link) throws IOException {
         String[] address = null;
 
@@ -154,13 +156,47 @@ public class APIHandler {
 
             for (APIMovieTemplate.showtimes s : mt.showtimes) {
                 {
-                    mov.add(new MovieTime(title, rat, getStartDate(s.dateTime), getEndDate(s.dateTime, duration), duration));
+                    if(s.theatre.id.equals(mTheatreId))
+                        mov.add(new MovieTime(title, rat, getStartDate(s.dateTime), getEndDate(s.dateTime, duration), duration));
                 }
             }
             return mov;
         }
         return null;
     }
+
+    public static ArrayList<Movie> getMovies() {
+        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-24&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
+
+        Gson gson = new Gson();
+
+        APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
+
+        ArrayList<Movie> mov = new ArrayList<Movie>();
+        for (APIMovieTemplate mt : mts) {
+            MovieTime.Rating rat;
+            switch (mt.ratings[1].code) {
+                case "R":
+                    rat = MovieTime.Rating.R;
+                    break;
+                case "PG13":
+                    rat = MovieTime.Rating.PG13;
+                    break;
+                case "PG":
+                    rat = MovieTime.Rating.PG;
+                    break;
+                case "G":
+                    rat = MovieTime.Rating.G;
+                    break;
+                default:
+                    rat = MovieTime.Rating.NC17;
+                    break;
+            }
+            mov.add(new Movie(mt.title, mt.genres, mt.releaseDate, mt.longDescription, mt.shortDescription, mt.directors, mt.officalUrl, mt.runTime, rat));
+        }
+        return mov;
+    }
+
 
     //NOTE: Default value for boolean is false
     //NOTE: This method will work for any get request (Not just the tmsapi)

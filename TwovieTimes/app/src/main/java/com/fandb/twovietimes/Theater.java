@@ -44,4 +44,6 @@ public class Theater {
         return mDistance;
     }
 
+    public String getAPIID(){ return mAPIId; }
+
 }

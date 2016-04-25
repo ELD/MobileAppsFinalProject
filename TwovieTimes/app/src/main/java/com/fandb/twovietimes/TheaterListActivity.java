@@ -18,6 +18,7 @@ public class TheaterListActivity extends SingleFragmentActivity implements Theat
 
     @Override
     public void onTheaterSelected(Theater theater) {
+        APIHandler.mTheatreId = theater.getAPIID();
         Intent intent = TheaterActivity.newIntent(this, theater.getId());
         startActivity(intent);
     }

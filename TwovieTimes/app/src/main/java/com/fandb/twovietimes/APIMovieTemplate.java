@@ -87,16 +87,16 @@ public class APIMovieTemplate {
     private String subType;
     public String title;
     private String releaseYear;
-    private String releaseDate;
+    public String releaseDate;
     private String titleLang;
     private String descriptionLang;
     private String entityType;
-    private String[] genres;
-    private String longDescription;
-    private String shortDescrption;
+    public String[] genres;
+    public String longDescription;
+    public String shortDescription;
     private String[] topCast;
-    private String[] directors;
-    private String officalUrl;
+    public String[] directors;
+    public String officalUrl;
     private qualityRating qualityRating;
     public ratings[] ratings;
     private String[] advisories;
@@ -110,7 +110,7 @@ public class APIMovieTemplate {
                 + ", releaseYear=" + releaseYear + ", releaseDate=" + releaseDate + ", titleLang=" + titleLang
                 + ", descriptionLang=" + descriptionLang + ", entityType=" + entityType + ", genres="
                 + Arrays.toString(genres) + ", longDescription=" + longDescription + ", shortDescrption="
-                + shortDescrption + ", topCast=" + Arrays.toString(topCast) + ", directors="
+                + shortDescription + ", topCast=" + Arrays.toString(topCast) + ", directors="
                 + Arrays.toString(directors) + ", officalUrl=" + officalUrl + ", qualityRating=" + qualityRating
                 + ", ratings=" + Arrays.toString(ratings) + ", advisories=" + Arrays.toString(advisories) + ", runTime="
                 + runTime + ", preferredImage=" + preferredImage + ", showtimes=" + Arrays.toString(showtimes) + "]";
