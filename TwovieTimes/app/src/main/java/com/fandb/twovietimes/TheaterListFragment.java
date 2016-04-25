@@ -38,6 +38,7 @@ public class TheaterListFragment extends Fragment {
     private RecyclerView mTheaterRecyclerView;
     private TheaterAdapter mAdapter;
     private Callbacks mCallbacks;
+    private boolean mDisabled = true;
 
     /**
      * Required interface for hosting activities.
@@ -107,7 +108,10 @@ public class TheaterListFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<Theater> result){
             super.onPostExecute(result);
+            if(result.size() == 0)
+                result.add(new Theater("Out of API Calls :(, wait until tomorrow", ""));
 
+            else mDisabled = false;
             updateUI(result);
         }
     }
@@ -137,6 +141,7 @@ public class TheaterListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            if(mDisabled) return;
             Intent intent = TheaterActivity.newIntent(getActivity(), mTheater.getId());
             startActivity(intent);
             //mCallbacks.onTheaterSelected(mTheater);

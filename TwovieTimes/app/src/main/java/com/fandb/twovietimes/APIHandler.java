@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -49,10 +50,15 @@ public class APIHandler {
     //TheatreId -> Theater
     public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
-    public static String[] getAddress(URL link) throws IOException {
-        String[] address = null;
 
-        Document doc = Jsoup.connect(link.toString())
+    public static String getAddress(String link, String theatre) throws IOException {
+        if(mTheaters.containsKey(theatre))
+            if(mTheaters.get(theatre).getAddress() != "")
+                return mTheaters.get(theatre).getAddress();
+            else return "";
+
+        Document doc = Jsoup.connect(link)
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
                 .maxBodySize(0)
                 .timeout(1000000000)
                 .get();
@@ -60,14 +66,17 @@ public class APIHandler {
         Element ele = doc.getElementById("maplink");
         if(ele == null){
              ele = doc.select("h2").first().select("a").first();
-            if(ele != null) getAddress(new URL(ele.attr("href")));
-            else Log.d(TAG, "null :(");
+            if(ele != null) return getAddress(ele.attr("href"), theatre);
         }
         else{
-            Log.d(TAG, "AMIHERE????");
+            Theater t;
+            t = mTheaters.get(theatre);
+            t.setAddress(ele.text());
+            mTheaters.put(theatre, t);
+            return ele.text();
         }
 
-        return address;
+        return "";
     }
 
     public static Integer parseRunTime(String runtime){
@@ -179,6 +188,8 @@ public class APIHandler {
         if(mInit == true) return;
         String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
 
+        if(json.equals("java.io.FileNotFoundException: http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq")) return;
+
         Gson gson = new Gson();
 
         APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
@@ -197,7 +208,13 @@ public class APIHandler {
     private static void populateTheatres(APIMovieTemplate[] mts){
         for(APIMovieTemplate mt : mts){
             for(APIMovieTemplate.showtimes s : mt.showtimes){
-                mTheaters.put(s.theatre.name, new Theater(s.theatre.name, "", "", s.theatre.id));
+                String add = "";
+                try {
+                    add = getAddress("http://www.fandango.com/tms.asp?t=AADVD&m=158522&d=2016-04-25", s.theatre.id);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                mTheaters.put(s.theatre.name, new Theater(s.theatre.name, "", add, s.theatre.id));
             }
         }
     }

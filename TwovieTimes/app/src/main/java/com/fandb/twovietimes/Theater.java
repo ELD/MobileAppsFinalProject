@@ -46,4 +46,8 @@ public class Theater {
 
     public String getAPIID(){ return mAPIId; }
 
+    public String getAddress(){ return mAddress; }
+
+    public void setAddress(String address){mAddress = address;}
+
 }
