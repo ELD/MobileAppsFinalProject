@@ -3,7 +3,6 @@ package com.fandb.twovietimes;
 /**
  * Created by Steve on 4/22/2016.
  */
-
 import java.util.Arrays;
 
 //The way Gson (Google JSON) works is that it tries to convert a string to an
@@ -15,7 +14,7 @@ import java.util.Arrays;
 //Doc page: http://developer.tmsapi.com/io-docs
 
 //Oh god...
-public class MovieTemplate {
+public class APIMovieTemplate {
     private class qualityRating{
         @Override
         public String toString() {
@@ -60,26 +59,27 @@ public class MovieTemplate {
         private String primary;
     }
 
-    private class showtimes{
-        @Override
-        public String toString() {
-            return "showtimes [showtimes=" + showtimes + ", dateTime=" + dateTime + ", quals=" + quals + ", barg="
-                    + barg + ", ticketURI=" + ticketURI + "]";
-        }
-        private class theatre{
+    public class showtimes{
+        public class theatre{
             @Override
             public String toString() {
-                return "theatre [id=" + id + ", name=" + name + "]";
+                return "theater [id=" + id + ", name=" + name + "]";
             }
-            private String id;
-            private String name;
+            public String id;
+            public String name;
         }
 
-        private showtimes showtimes;
+        public theatre theatre;
         private String dateTime;
         private String quals;
         private String barg;
         private String ticketURI;
+
+        @Override
+        public String toString() {
+            return "showtimes [theatre=" + theatre + ", dateTime=" + dateTime + ", quals=" + quals + ", barg="
+                    + barg + ", ticketURI=" + ticketURI + "]";
+        }
     }
 
     private String tmsId;
@@ -102,7 +102,7 @@ public class MovieTemplate {
     private String[] advisories;
     private String runTime;
     private preferredImage preferredImage;
-    private showtimes[] showtimes;
+    public showtimes[] showtimes;
 
     @Override
     public String toString() {

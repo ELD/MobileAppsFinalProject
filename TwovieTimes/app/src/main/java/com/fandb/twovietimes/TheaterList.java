@@ -1,6 +1,12 @@
 package com.fandb.twovietimes;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +20,12 @@ public class TheaterList {
     private static TheaterList sTheaterList;
     private Context mContext;
 
-    private List<Theater> mTheaters;
+    public static List<Theater> mTheaters;
 
     private TheaterList(Context context) {
         mContext = context.getApplicationContext();
         mTheaters = new ArrayList<>();
-        mTheaters.add(new Theater("THEATER 1", "2 Miles"));
-        mTheaters.add(new Theater("THEATER 2", "4 Miles"));
+        mTheaters.add(new Theater("Loading...", ""));
     }
 
     public static TheaterList get(Context context) {

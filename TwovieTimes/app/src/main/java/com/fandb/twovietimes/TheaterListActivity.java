@@ -3,6 +3,8 @@ package com.fandb.twovietimes;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 
+import java.util.ArrayList;
+
 /**
  * Created by Alex on 4/6/16.
  */
@@ -19,4 +21,5 @@ public class TheaterListActivity extends SingleFragmentActivity implements Theat
         Intent intent = TheaterActivity.newIntent(this, theater.getId());
         startActivity(intent);
     }
+
 }

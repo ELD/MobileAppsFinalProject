@@ -21,9 +21,15 @@ public class Theater {
     }
 
     public Theater(String name, String distance) {
-        mId = UUID.randomUUID();
+        this();
         mName = name;
         mDistance = distance;
+    }
+
+    public Theater(String name, String distance, String address, String apiid){
+        this(name, distance);
+        mAddress = address;
+        mAPIId = apiid;
     }
 
     public UUID getId() {

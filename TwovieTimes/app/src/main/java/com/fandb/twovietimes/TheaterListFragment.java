@@ -2,15 +2,33 @@ package com.fandb.twovietimes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -37,7 +55,7 @@ public class TheaterListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateUI();
+        updateUI(null);
     }
 
     @Override
@@ -46,14 +64,22 @@ public class TheaterListFragment extends Fragment {
         mTheaterRecyclerView = (RecyclerView) view.findViewById(R.id.theater_recycler_view);
         mTheaterRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        updateUI();
+        new API().execute(APIType.GetTheaters);
 
+        updateUI(null);
         return view;
     }
 
-    public void updateUI() {
-        TheaterList theaterList = TheaterList.get(getActivity());
-        List<Theater> theaters = theaterList.getTheaters();
+    public void updateUI(ArrayList<Theater> test) {
+        List<Theater> theaters = null;
+        if(test == null){
+            TheaterList theaterList = TheaterList.get(getActivity());
+            theaters = theaterList.getTheaters();
+        }
+        else{
+            theaters = test;
+            mAdapter = null;
+        }
 
         if (mAdapter == null) {
             mAdapter = new TheaterAdapter(theaters);
@@ -62,6 +88,28 @@ public class TheaterListFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         }
     }
+
+    //Docs: http://developer.tmsapi.com/docs/v2/
+    public class API extends AsyncTask<APIType, Integer, ArrayList<Theater> > {
+        @Override
+        protected ArrayList<Theater> doInBackground(APIType... type) {
+            APIType request = type[0];
+            switch(request){
+                case GetTheaters:
+                    return APIHandler.getTheaters();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Theater> result){
+            super.onPostExecute(result);
+
+            updateUI(result);
+        }
+    }
+
 
     private class TheaterHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
