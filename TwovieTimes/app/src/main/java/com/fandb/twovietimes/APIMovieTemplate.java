@@ -25,7 +25,10 @@ public class APIMovieTemplate {
     }
 
     public class ratings{
-
+        ratings(String b, String c){
+            body = b;
+            c = code;
+        }
         private String body;
         public String code;
         @Override

@@ -12,6 +12,8 @@ public class TheaterListActivity extends SingleFragmentActivity implements Theat
 
     @Override
     protected Fragment createFragment() {
+        APIHandler.mAM = getAssets();
+
         return new TheaterListFragment();
     }
 

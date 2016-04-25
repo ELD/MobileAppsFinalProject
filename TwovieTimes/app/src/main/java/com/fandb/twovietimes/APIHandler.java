@@ -1,7 +1,9 @@
 package com.fandb.twovietimes;
 
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -12,8 +14,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -43,6 +48,7 @@ public class APIHandler {
 
     public static boolean mInit = false;
     public static String mTheatreId;
+    static AssetManager mAM;
     //Title -> Movie
     public static HashMap<String, Movie> mMovies = new HashMap<String, Movie>();
     //TheatreId -> MovieTime[]
@@ -52,10 +58,12 @@ public class APIHandler {
 
 
     public static String getAddress(String link, String theatre) throws IOException {
-        if(mTheaters.containsKey(theatre))
-            if(mTheaters.get(theatre).getAddress() != "")
+        if(mTheaters.containsKey(theatre)) {
+            if (mTheaters.get(theatre).getAddress() != "") {
                 return mTheaters.get(theatre).getAddress();
-            else return "";
+            }
+        }
+        else return "";
 
         Document doc = Jsoup.connect(link)
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
@@ -152,7 +160,9 @@ public class APIHandler {
     private static void populateMovieTimes(APIMovieTemplate[] mts){
         for (APIMovieTemplate mt : mts) {
             String title = mt.title;
-            MovieTime.Rating rat = getRating(mt.ratings[0].code);
+            MovieTime.Rating ret;
+            if(mt.ratings == null) ret = MovieTime.Rating.G;
+            else ret = getRating(mt.ratings[0].code);
 
             if(mt.runTime == null) mt.runTime = "PT00H01M";
             int duration = parseRunTime(mt.runTime);
@@ -164,7 +174,7 @@ public class APIHandler {
                         time = mMovieTimes.get(s.theatre.id);
                     else
                         time = new ArrayList<MovieTime>();
-                    time.add(new MovieTime(title, rat, getStartDate(s.dateTime), getEndDate(s.dateTime, duration), duration));
+                    time.add(new MovieTime(title, ret, getStartDate(s.dateTime), getEndDate(s.dateTime, duration), duration));
                     mMovieTimes.put(s.theatre.id, time);
 
                 }
@@ -178,7 +188,9 @@ public class APIHandler {
 
     private static void populateMovies(APIMovieTemplate[] mts){
         for (APIMovieTemplate mt : mts) {
-            MovieTime.Rating rat = getRating(mt.ratings[0].code);
+            MovieTime.Rating rat;
+            if(mt.ratings == null)  rat = MovieTime.Rating.G;
+            else rat = getRating(mt.ratings[0].code);
 
             mMovies.put(mt.title, new Movie(mt.title, mt.genres, mt.releaseDate, mt.longDescription, mt.shortDescription, mt.directors, mt.officalUrl, mt.runTime, rat));
         }
@@ -188,11 +200,30 @@ public class APIHandler {
         if(mInit == true) return;
         String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
 
-        if(json.equals("java.io.FileNotFoundException: http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq")) return;
+        if(json.equals("java.io.FileNotFoundException: http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq")){
+            json = "";
+            try{
+                InputStream inputFile = (mAM.open("backup.txt"));
+
+                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputFile));
+
+                String line;
+
+                while ((line = bufferReader.readLine()) != null)   {
+                    json+= line;
+                }
+                bufferReader.close();
+                json = json.replace("\n", "");
+            }catch(Exception e){
+                return;
+            }
+        }
 
         Gson gson = new Gson();
 
         APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
+
+        Log.d(TAG, String.valueOf(mts[0]));
 
         populateTheatres(mts);
         populateMovies(mts);
