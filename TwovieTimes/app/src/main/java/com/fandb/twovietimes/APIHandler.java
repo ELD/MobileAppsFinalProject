@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +41,12 @@ public class APIHandler {
     public static final String TAG = "APIHANDLER";
 
     public static String mTheatreId;
+    //Title -> Movie
+    public static HashMap<String, Movie> mMovies = new HashMap<String, Movie>();
+    //TheatreId -> MovieTime[]
+    public static HashMap<String, ArrayList<MovieTime> > mMovieTimes = new HashMap<String, ArrayList<MovieTime> >();
+    //TheatreId -> Theater
+    public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
     public static String[] getAddress(URL link) throws IOException {
         String[] address = null;
@@ -60,25 +67,6 @@ public class APIHandler {
         }
 
         return address;
-    }
-
-    public static ArrayList<Theater> getTheaters(){
-        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-24&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
-
-        Gson gson = new Gson();
-        APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
-
-        ArrayList<Theater> ths = new ArrayList<Theater>();
-        HashSet<String> con = new HashSet<String>();
-        for(APIMovieTemplate mt : mts){
-            for(APIMovieTemplate.showtimes s : mt.showtimes){
-                if(con.contains(s.theatre.id)) continue;
-                con.add(s.theatre.id);
-                ths.add(new Theater(s.theatre.name, "", "", s.theatre.id));
-            }
-        }
-
-        return ths;
     }
 
     public static Integer parseRunTime(String runtime){
@@ -125,78 +113,90 @@ public class APIHandler {
     }
 
     public static ArrayList<MovieTime> getMovieTimes() {
-        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-24&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
+        return mMovieTimes.get(mTheatreId);
+    }
 
-        Gson gson = new Gson();
+    private static MovieTime.Rating getRating(String rating){
+        MovieTime.Rating rat;
+        switch (rating) {
+            case "R":
+                rat = MovieTime.Rating.R;
+                break;
+            case "PG13":
+                rat = MovieTime.Rating.PG13;
+                break;
+            case "PG":
+                rat = MovieTime.Rating.PG;
+                break;
+            case "G":
+                rat = MovieTime.Rating.G;
+                break;
+            default:
+                rat = MovieTime.Rating.NC17;
+                break;
+        }
 
-        APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
+        return rat;
+    }
 
-        ArrayList<MovieTime> mov = new ArrayList<MovieTime>();
+    private static void populateMovieTimes(APIMovieTemplate[] mts){
         for (APIMovieTemplate mt : mts) {
             String title = mt.title;
-            MovieTime.Rating rat;
-            switch (mt.ratings[1].code) {
-                case "R":
-                    rat = MovieTime.Rating.R;
-                    break;
-                case "PG13":
-                    rat = MovieTime.Rating.PG13;
-                    break;
-                case "PG":
-                    rat = MovieTime.Rating.PG;
-                    break;
-                case "G":
-                    rat = MovieTime.Rating.G;
-                    break;
-                default:
-                    rat = MovieTime.Rating.NC17;
-                    break;
-            }
+            MovieTime.Rating rat = getRating(mt.ratings[0].code);
+
+            if(mt.runTime == null) mt.runTime = "PT00H01M";
             int duration = parseRunTime(mt.runTime);
 
             for (APIMovieTemplate.showtimes s : mt.showtimes) {
                 {
-                    if(s.theatre.id.equals(mTheatreId))
-                        mov.add(new MovieTime(title, rat, getStartDate(s.dateTime), getEndDate(s.dateTime, duration), duration));
+                    ArrayList<MovieTime> time;
+                    if(mMovieTimes.containsKey(s.theatre.id))
+                        time = mMovieTimes.get(s.theatre.id);
+                    else
+                        time = new ArrayList<MovieTime>();
+                    time.add(new MovieTime(title, rat, getStartDate(s.dateTime), getEndDate(s.dateTime, duration), duration));
+                    mMovieTimes.put(s.theatre.id, time);
+
                 }
             }
-            return mov;
         }
-        return null;
     }
 
     public static ArrayList<Movie> getMovies() {
-        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-24&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
+        return new ArrayList<Movie>(mMovies.values());
+    }
+
+    private static void populateMovies(APIMovieTemplate[] mts){
+        for (APIMovieTemplate mt : mts) {
+            MovieTime.Rating rat = getRating(mt.ratings[0].code);
+
+            mMovies.put(mt.title, new Movie(mt.title, mt.genres, mt.releaseDate, mt.longDescription, mt.shortDescription, mt.directors, mt.officalUrl, mt.runTime, rat));
+        }
+    }
+
+    public static void init(){
+        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
 
         Gson gson = new Gson();
 
         APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
 
-        ArrayList<Movie> mov = new ArrayList<Movie>();
-        for (APIMovieTemplate mt : mts) {
-            MovieTime.Rating rat;
-            switch (mt.ratings[1].code) {
-                case "R":
-                    rat = MovieTime.Rating.R;
-                    break;
-                case "PG13":
-                    rat = MovieTime.Rating.PG13;
-                    break;
-                case "PG":
-                    rat = MovieTime.Rating.PG;
-                    break;
-                case "G":
-                    rat = MovieTime.Rating.G;
-                    break;
-                default:
-                    rat = MovieTime.Rating.NC17;
-                    break;
-            }
-            mov.add(new Movie(mt.title, mt.genres, mt.releaseDate, mt.longDescription, mt.shortDescription, mt.directors, mt.officalUrl, mt.runTime, rat));
-        }
-        return mov;
+        populateTheatres(mts);
+        populateMovies(mts);
+        populateMovieTimes(mts);
     }
 
+    public static ArrayList<Theater> getTheaters(){
+        return new ArrayList<Theater>(mTheaters.values());
+    }
+
+    private static void populateTheatres(APIMovieTemplate[] mts){
+        for(APIMovieTemplate mt : mts){
+            for(APIMovieTemplate.showtimes s : mt.showtimes){
+                mTheaters.put(s.theatre.name, new Theater(s.theatre.name, "", "", s.theatre.id));
+            }
+        }
+    }
 
     //NOTE: Default value for boolean is false
     //NOTE: This method will work for any get request (Not just the tmsapi)

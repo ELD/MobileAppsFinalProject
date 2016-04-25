@@ -93,6 +93,9 @@ public class TheaterListFragment extends Fragment {
     public class API extends AsyncTask<APIType, Integer, ArrayList<Theater> > {
         @Override
         protected ArrayList<Theater> doInBackground(APIType... type) {
+            //ONLY DO THIS ONCE
+            APIHandler.init();
+
             APIType request = type[0];
             switch(request){
                 case GetTheaters:
