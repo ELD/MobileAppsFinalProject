@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class TheaterActivity extends AppCompatActivity{
     private static final int REQUEST_DATE = 0;
 
     private RecyclerView mMovieRecylcerView;
-    private MovieAdapter mMovieAdapter;
+    private MoviePairAdapter mMovieAdapter;
     private Theater mTheater;
     private Button mGetMoviesButton;
     private Button mLaterButton;
@@ -127,69 +127,65 @@ public class TheaterActivity extends AppCompatActivity{
         List<MoviePair> moviePairs = moviePairList.getMoviePairs();
 
         if (mMovieAdapter == null) {
-            mMovieAdapter = new MovieAdapter(moviePairs);
+            //mMovieAdapter = new MovieAdapter(moviePairs);
+            mMovieAdapter = new MoviePairAdapter(moviePairs);
             mMovieRecylcerView.setAdapter(mMovieAdapter);
         } else {
             mMovieAdapter.notifyDataSetChanged();
         }
     }
 
-    private class MovieHolder extends RecyclerView.ViewHolder {
-        private MoviePair mMoviePair;
 
-        private TextView mMovieOneTextView;
-        private TextView mMovieOneStart;
-        private TextView mMovieOneDuration;
-        private TextView mMovieTwoTextView;
-        private TextView mMovieTwoStart;
-        private TextView mMovieTwoDuration;
+    private class MoviePairHolder extends RecyclerView.ViewHolder {
+        //private MoviePair mMoviePair;
+        private View mMoviePairView;
 
-        public MovieHolder(View itemView) {
+        public MoviePairHolder(View itemView) {
             super(itemView);
+            mMoviePairView = itemView;
+            //mMoviePairView = new MoviePairView(itemView.getContext(), mMoviePair, itemView.getWidth(), itemView.getHeight());
 
-            mMovieOneTextView = (TextView) itemView.findViewById(R.id.movie_one_title);
-            mMovieOneStart = (TextView) itemView.findViewById(R.id.movie_one_start);
-            mMovieOneDuration = (TextView) itemView.findViewById(R.id.movie_one_runtime);
-            mMovieTwoTextView = (TextView) itemView.findViewById(R.id.movie_two_title);
-            mMovieTwoStart = (TextView) itemView.findViewById(R.id.movie_two_start);
-            mMovieTwoDuration = (TextView) itemView.findViewById(R.id.movie_two_runtime);
+            //itemView.view
+        }
+        public void bindMoviePair(MoviePair pair) {
+            FrameLayout holder = (FrameLayout) itemView.findViewById(R.id.holder);
+            mMoviePairView = new MoviePairView(itemView.getContext(), pair, getWindowManager().getDefaultDisplay().getWidth());
+
+            holder.addView(mMoviePairView);
+
+            mMoviePairView.invalidate();
         }
 
-        public void bindMovieTime(MoviePair pair) {
-            mMoviePair = pair;
-
-            mMovieOneTextView.setText(mMoviePair.getMovieOne());
-            mMovieOneStart.setText(mMoviePair.getMovieOneStart().toString());
-            mMovieOneDuration.setText(mMoviePair.getMovieOneDuration().toString());
-            mMovieTwoTextView.setText(mMoviePair.getMovieTwo());
-            mMovieTwoStart.setText(mMoviePair.getMovieTwoStart().toString());
-            mMovieTwoDuration.setText(mMoviePair.getMovieTwoDuration().toString());
-        }
     }
 
-    private class MovieAdapter extends RecyclerView.Adapter<MovieHolder> {
+    private class MoviePairAdapter extends RecyclerView.Adapter<MoviePairHolder> {
         private List<MoviePair> mMoviePairs;
 
-        public MovieAdapter(List<MoviePair> pairs) {
+        public MoviePairAdapter(List<MoviePair> pairs) {
             mMoviePairs = pairs;
         }
 
         @Override
-        public MovieHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MoviePairHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(TheaterActivity.this);
-            View view = layoutInflater.inflate(R.layout.list_item_movie_pairing, parent, false);
-            return new MovieHolder(view);
+            View view = layoutInflater.inflate(R.layout.movie_pair_holder, parent, false);
+
+
+            return new MoviePairHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(MovieHolder holder, int position) {
+        public void onBindViewHolder(MoviePairHolder holder, int position) {
             MoviePair pair = mMoviePairs.get(position);
-            holder.bindMovieTime(pair);
+            holder.bindMoviePair(pair);
         }
 
         @Override
         public int getItemCount() {
             return mMoviePairs.size();
         }
+
+
     }
+
 }

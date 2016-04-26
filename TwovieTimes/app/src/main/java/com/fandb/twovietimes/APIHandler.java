@@ -1,22 +1,16 @@
 package com.fandb.twovietimes;
 
 import android.content.res.AssetManager;
-import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.google.gson.Gson;
-
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -30,8 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -198,9 +190,9 @@ public class APIHandler {
 
     public static void init(){
         if(mInit == true) return;
-        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
+        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-26&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
 
-        if(json.equals("java.io.FileNotFoundException: http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq")){
+        if(json.equals("java.io.FileNotFoundException: http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-26&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq")){
             json = "";
             try{
                 InputStream inputFile = (mAM.open("backup.txt"));
@@ -241,7 +233,7 @@ public class APIHandler {
             for(APIMovieTemplate.showtimes s : mt.showtimes){
                 String add = "";
                 try {
-                    add = getAddress("http://www.fandango.com/tms.asp?t=AADVD&m=158522&d=2016-04-25", s.theatre.id);
+                    add = getAddress("http://www.fandango.com/tms.asp?t=AADVD&m=158522&d=2016-04-26", s.theatre.id);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
