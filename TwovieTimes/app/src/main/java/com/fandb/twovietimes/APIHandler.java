@@ -6,11 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.google.gson.Gson;
-
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,8 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -202,6 +198,7 @@ public class APIHandler {
         }
     }
 
+
     private static String getDate(Date d, boolean output){
         DateFormat df;
         if(output) df = new SimpleDateFormat("yyyyMMdd");
@@ -281,7 +278,7 @@ public class APIHandler {
             for(APIMovieTemplate.showtimes s : mt.showtimes){
                 String add = "";
                 try {
-                    add = getAddress("http://www.fandango.com/tms.asp?t=AADVD&m=158522&d=2016-04-25", s.theatre.id);
+                    add = getAddress("http://www.fandango.com/tms.asp?t=AADVD&m=158522&d=2016-04-26", s.theatre.id);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
