@@ -1,11 +1,18 @@
 package com.fandb.twovietimes;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -33,13 +40,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
  * Created by Steve on 4/22/2016.
  */
 
-enum APIType{
+enum APIType {
     GetTheaters,
 };
 
@@ -51,21 +59,21 @@ public class APIHandler {
     public static Date mDate = new Date();
     public static Context mContext = null;
     public static String mTheatreId;
+    public static String mZip;
     //Title -> Movie
     public static HashMap<String, Movie> mMovies = new HashMap<String, Movie>();
     //TheatreId -> MovieTime[]
-    public static HashMap<String, ArrayList<MovieTime> > mMovieTimes = new HashMap<String, ArrayList<MovieTime> >();
+    public static HashMap<String, ArrayList<MovieTime>> mMovieTimes = new HashMap<String, ArrayList<MovieTime>>();
     //TheatreId -> Theater
     public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
 
     public static String getAddress(String link, String theatre) throws IOException {
-        if(mTheaters.containsKey(theatre)) {
+        if (mTheaters.containsKey(theatre)) {
             if (mTheaters.get(theatre).getAddress() != "") {
                 return mTheaters.get(theatre).getAddress();
             }
-        }
-        else return "";
+        } else return "";
 
         Document doc = Jsoup.connect(link)
                 .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101 Firefox/45.0")
@@ -74,11 +82,10 @@ public class APIHandler {
                 .get();
 
         Element ele = doc.getElementById("maplink");
-        if(ele == null){
-             ele = doc.select("h2").first().select("a").first();
-            if(ele != null) return getAddress(ele.attr("href"), theatre);
-        }
-        else{
+        if (ele == null) {
+            ele = doc.select("h2").first().select("a").first();
+            if (ele != null) return getAddress(ele.attr("href"), theatre);
+        } else {
             Theater t;
             t = mTheaters.get(theatre);
             t.setAddress(ele.text());
@@ -89,7 +96,7 @@ public class APIHandler {
         return "";
     }
 
-    public static Integer parseRunTime(String runtime){
+    public static Integer parseRunTime(String runtime) {
         runtime = runtime.replace("PT", "");
         runtime = runtime.replace("M", "");
         String[] rt = runtime.split("H");
@@ -97,7 +104,7 @@ public class APIHandler {
         return Integer.parseInt(rt[0]) * 60 + Integer.parseInt(rt[1]);
     }
 
-    public static Date getStartDate(String date){
+    public static Date getStartDate(String date) {
         String[] pieces = date.split("T");
 
         DateFormat form = new SimpleDateFormat("yyyy-MM-ddHH:mm", Locale.ENGLISH);
@@ -112,7 +119,7 @@ public class APIHandler {
         return null;
     }
 
-    public static Date getEndDate(String date, int duration){
+    public static Date getEndDate(String date, int duration) {
         String[] pieces = date.split("T");
 
         DateFormat form = new SimpleDateFormat("yyyy-MM-ddHH:mm", Locale.ENGLISH);
@@ -136,7 +143,7 @@ public class APIHandler {
         return mMovieTimes.get(mTheatreId);
     }
 
-    private static MovieTime.Rating getRating(String rating){
+    private static MovieTime.Rating getRating(String rating) {
         MovieTime.Rating rat;
         switch (rating) {
             case "R":
@@ -159,20 +166,20 @@ public class APIHandler {
         return rat;
     }
 
-    private static void populateMovieTimes(APIMovieTemplate[] mts){
+    private static void populateMovieTimes(APIMovieTemplate[] mts) {
         for (APIMovieTemplate mt : mts) {
             String title = mt.title;
             MovieTime.Rating ret;
-            if(mt.ratings == null) ret = MovieTime.Rating.G;
+            if (mt.ratings == null) ret = MovieTime.Rating.G;
             else ret = getRating(mt.ratings[0].code);
 
-            if(mt.runTime == null) mt.runTime = "PT00H01M";
+            if (mt.runTime == null) mt.runTime = "PT00H01M";
             int duration = parseRunTime(mt.runTime);
 
             for (APIMovieTemplate.showtimes s : mt.showtimes) {
                 {
                     ArrayList<MovieTime> time;
-                    if(mMovieTimes.containsKey(s.theatre.id))
+                    if (mMovieTimes.containsKey(s.theatre.id))
                         time = mMovieTimes.get(s.theatre.id);
                     else
                         time = new ArrayList<MovieTime>();
@@ -188,51 +195,49 @@ public class APIHandler {
         return new ArrayList<Movie>(mMovies.values());
     }
 
-    private static void populateMovies(APIMovieTemplate[] mts){
+    private static void populateMovies(APIMovieTemplate[] mts) {
         for (APIMovieTemplate mt : mts) {
             MovieTime.Rating rat;
-            if(mt.ratings == null)  rat = MovieTime.Rating.G;
+            if (mt.ratings == null) rat = MovieTime.Rating.G;
             else rat = getRating(mt.ratings[0].code);
 
             mMovies.put(mt.title, new Movie(mt.title, mt.genres, mt.releaseDate, mt.longDescription, mt.shortDescription, mt.directors, mt.officalUrl, mt.runTime, rat));
         }
     }
 
-
-    private static String getDate(Date d, boolean output){
+    private static String getDate(Date d, boolean output) {
         DateFormat df;
-        if(output) df = new SimpleDateFormat("yyyyMMdd");
+        if (output) df = new SimpleDateFormat("yyyyMMdd");
         else df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(d);
     }
 
-    private static String readFile(){
+    private static String readFile() {
         String json = "";
-        try{
+        try {
             FileInputStream inputFile = mContext.openFileInput(getDate(mDate, true) + ".txt");
 
             int line;
 
-            while ((line = inputFile.read()) != -1)   {
-                json+=(char)line;
+            while ((line = inputFile.read()) != -1) {
+                json += (char) line;
             }
             inputFile.close();
             json = json.replace("\n", "");
-        }catch(Exception e){
+        } catch (Exception e) {
             return null;
         }
 
         return json;
     }
 
-    private static void writeFile(String output){
-        try{
+    private static void writeFile(String output) {
+        try {
             mContext.deleteFile(getDate(mDate, true) + ".txt");
             FileOutputStream fos = mContext.openFileOutput(getDate(mDate, true) + ".txt", Context.MODE_PRIVATE);
             fos.write(output.getBytes());
             fos.close();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
         }
     }
 
@@ -243,25 +248,77 @@ public class APIHandler {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    private static String getZipCodeFromLocation(Location location) {
+        Address addr = getAddressFromLocation(location);
+        return addr.getPostalCode() == null ? "80401" : addr.getPostalCode();
+    }
+
+    private static Address getAddressFromLocation(Location location) {
+        Geocoder geocoder = new Geocoder(mContext);
+        Address address = new Address(Locale.getDefault());
+        try {
+            List<Address> addr = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addr.size() > 0) {
+                address = addr.get(0);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return address;
+    }
+
+    private static void getZipCode() {
+        Log.d(TAG, "getzipcode");
+        try {
+
+            LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                mZip = "80401";
+                return;
+            }
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            mZip = getZipCodeFromLocation(location);
+        }catch(Exception e){
+            mZip = "80401";
+        }
+    }
+
     public static void init(){
-        String request = "http://data.tmsapi.com/v1.1/movies/showings?startDate="+getDate(mDate, false)+"&zip=80401&api_key="+API_KEY;
+        if(mInit == true) return;
+        if(mZip == null || mZip == "") getZipCode();
+        String request = "http://data.tmsapi.com/v1.1/movies/showings?startDate="+getDate(mDate, false)+"&zip="+mZip+"&api_key="+API_KEY;
         Log.d(TAG, request);
 
-        if(mInit == true) return;
         if(mDate == null) mDate = new Date();
 
         String json = "";
-        if(!mContext.getFileStreamPath(getDate(mDate, true) + ".txt").exists()) json = getRequest(request, false).toString();
-        else json = readFile();
+        if(!mContext.getFileStreamPath(getDate(mDate, true) + ".txt").isFile()){
+            Log.d(TAG, "No cache file found");
+            json = getRequest(request, false).toString();
+        }
 
-        if(json.equals("java.io.FileNotFoundException: " + request) || !isOnline()) json = readFile();
+        else{
+            Log.d(TAG, "Reading from cache...");
+            json = readFile();
+        }
+
+
+        if(json.equals("java.io.FileNotFoundException: " + request) || !isOnline()) {
+            Log.d(TAG, "Loading from cache");
+            json = readFile();
+        }
+        else if(json == "" || json == null) return;
         else writeFile(json);
-
-        if(json == "" || json == null) return;
 
         Gson gson = new Gson();
 
-        Log.d(TAG, json);
 
         APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
 
