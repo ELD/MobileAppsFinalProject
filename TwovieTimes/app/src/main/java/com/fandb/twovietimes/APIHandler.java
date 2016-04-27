@@ -249,7 +249,10 @@ public class APIHandler {
 
         if(mInit == true) return;
         if(mDate == null) mDate = new Date();
-        String json = getRequest(request, false).toString();
+
+        String json = "";
+        if(!mContext.getFileStreamPath(getDate(mDate, true) + ".txt").exists()) json = getRequest(request, false).toString();
+        else json = readFile();
 
         if(json.equals("java.io.FileNotFoundException: " + request) || !isOnline()) json = readFile();
         else writeFile(json);
