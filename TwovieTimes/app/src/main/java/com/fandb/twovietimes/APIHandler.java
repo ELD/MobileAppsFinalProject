@@ -1,6 +1,9 @@
 package com.fandb.twovietimes;
 
+import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.NetworkOnMainThreadException;
 import android.provider.MediaStore;
@@ -15,7 +18,9 @@ import org.jsoup.nodes.Element;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,8 +52,9 @@ public class APIHandler {
     public static final String TAG = "APIHANDLER";
 
     public static boolean mInit = false;
+    public static Date mDate = new Date();
+    public static Context mContext = null;
     public static String mTheatreId;
-    static AssetManager mAM;
     //Title -> Movie
     public static HashMap<String, Movie> mMovies = new HashMap<String, Movie>();
     //TheatreId -> MovieTime[]
@@ -196,34 +202,68 @@ public class APIHandler {
         }
     }
 
-    public static void init(){
-        if(mInit == true) return;
-        String json = getRequest("http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq", false).toString();
+    private static String getDate(Date d, boolean output){
+        DateFormat df;
+        if(output) df = new SimpleDateFormat("yyyyMMdd");
+        else df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(d);
+    }
 
-        if(json.equals("java.io.FileNotFoundException: http://data.tmsapi.com/v1.1/movies/showings?startDate=2016-04-25&zip=80401&api_key=9mdax3qa5xncse6gmc6bccyq")){
-            json = "";
-            try{
-                InputStream inputFile = (mAM.open("backup.txt"));
+    private static String readFile(){
+        String json = "";
+        try{
+            FileInputStream inputFile = mContext.openFileInput(getDate(mDate, true) + ".txt");
 
-                BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputFile));
+            int line;
 
-                String line;
-
-                while ((line = bufferReader.readLine()) != null)   {
-                    json+= line;
-                }
-                bufferReader.close();
-                json = json.replace("\n", "");
-            }catch(Exception e){
-                return;
+            while ((line = inputFile.read()) != -1)   {
+                json+=(char)line;
             }
+            inputFile.close();
+            json = json.replace("\n", "");
+        }catch(Exception e){
+            return null;
         }
+
+        return json;
+    }
+
+    private static void writeFile(String output){
+        try{
+            mContext.deleteFile(getDate(mDate, true) + ".txt");
+            FileOutputStream fos = mContext.openFileOutput(getDate(mDate, true) + ".txt", Context.MODE_PRIVATE);
+            fos.write(output.getBytes());
+            fos.close();
+        }
+        catch(Exception e){
+        }
+    }
+
+    public static boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static void init(){
+        String request = "http://data.tmsapi.com/v1.1/movies/showings?startDate="+getDate(mDate, false)+"&zip=80401&api_key="+API_KEY;
+        Log.d(TAG, request);
+
+        if(mInit == true) return;
+        if(mDate == null) mDate = new Date();
+        String json = getRequest(request, false).toString();
+
+        if(json.equals("java.io.FileNotFoundException: " + request) || !isOnline()) json = readFile();
+        else writeFile(json);
+
+        if(json == "" || json == null) return;
 
         Gson gson = new Gson();
 
-        APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
+        Log.d(TAG, json);
 
-        Log.d(TAG, String.valueOf(mts[0]));
+        APIMovieTemplate[] mts = gson.fromJson(json, APIMovieTemplate[].class);
 
         populateTheatres(mts);
         populateMovies(mts);

@@ -12,7 +12,7 @@ public class TheaterListActivity extends SingleFragmentActivity implements Theat
 
     @Override
     protected Fragment createFragment() {
-        APIHandler.mAM = getAssets();
+        APIHandler.mContext = getApplicationContext();
 
         return new TheaterListFragment();
     }
