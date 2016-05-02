@@ -1,6 +1,7 @@
 package com.fandb.twovietimes;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
@@ -58,8 +59,12 @@ public class APIHandler {
     public static boolean mInit = false;
     public static Date mDate = new Date();
     public static Context mContext = null;
+    public static Activity mActivity = null;
     public static String mTheatreId;
     public static String mZip;
+    public static int mRadius = 5;
+    public static int mDays = 1;
+
     //Title -> Movie
     public static HashMap<String, Movie> mMovies = new HashMap<String, Movie>();
     //TheatreId -> MovieTime[]
@@ -262,15 +267,13 @@ public class APIHandler {
                 address = addr.get(0);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG, "Could not get location from long and lat");
         }
         return address;
     }
 
     private static void getZipCode() {
-        Log.d(TAG, "getzipcode");
         try {
-
             LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
@@ -280,12 +283,15 @@ public class APIHandler {
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
-                mZip = "80401";
+                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                Log.d(TAG, "Requesting Location permission");
+                mZip = "";
                 return;
             }
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             mZip = getZipCodeFromLocation(location);
         }catch(Exception e){
+            Log.d(TAG, "Could not get location manager");
             mZip = "80401";
         }
     }
@@ -293,7 +299,9 @@ public class APIHandler {
     public static void init(){
         if(mInit == true) return;
         if(mZip == null || mZip == "") getZipCode();
-        String request = "http://data.tmsapi.com/v1.1/movies/showings?startDate="+getDate(mDate, false)+"&zip="+mZip+"&api_key="+API_KEY;
+        //Waiting for permission
+        if(mZip == "") return;
+        String request = "http://data.tmsapi.com/v1.1/movies/showings?startDate="+getDate(mDate, false)+"&zip="+mZip+"&api_key="+API_KEY + "&numDays="+mDays+"&radius="+mRadius;
         Log.d(TAG, request);
 
         if(mDate == null) mDate = new Date();
