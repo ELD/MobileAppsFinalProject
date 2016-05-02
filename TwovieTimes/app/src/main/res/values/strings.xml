@@ -6,4 +6,7 @@
     <string name="movies_now_text">Now</string>
     <string name="get_movies">Get Movie Times</string>
     <string name="date_picker_title">Pick a Movie Time</string>
+    <string name="select_genre_title">Genre</string>
+    <string name="select_movie_title">Movie</string>
+    <string name="genre_selector_title">Select:</string>
 </resources>
