@@ -135,7 +135,8 @@ public class TheaterActivity extends AppCompatActivity{
                 //final View genrePicker = inflater.inflate(R.layout.genre_picker, null);
 
                 GenrePickerFragment gp = new GenrePickerFragment();
-                
+
+                gp.show(getSupportFragmentManager(), DIALOG_GENRE);
 
                 //gp.setTargetFragment();
                 //gp.show(manager, DIALOG_GENRE);
