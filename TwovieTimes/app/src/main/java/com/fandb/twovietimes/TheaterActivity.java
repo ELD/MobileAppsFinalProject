@@ -1,5 +1,6 @@
 package com.fandb.twovietimes;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +32,11 @@ public class TheaterActivity extends AppCompatActivity{
     private static final String TAG = "THEATER_ACTIVITY";
     private static final String EXTRA_THEATER_ID = "com.fandb.twovietimes.theater_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_GENRE = "DialogGenre";
+    private static final int REQUEST_TIME = 0;
+    private static final int REQUEST_GENRE_LEFT = 1;
+    private static final int REQUEST_GENRE_RIGHT = 2;
+
 
     private static final int REQUEST_DATE = 0;
 
@@ -40,6 +46,9 @@ public class TheaterActivity extends AppCompatActivity{
     private Button mGetMoviesButton;
     private Button mLaterButton;
     private CheckBox mNowCheckbox;
+
+    private Button mLeftGenreButton;
+    private Button mRightGenreButton;
 
     private Date mMovieDate;
 
@@ -116,6 +125,46 @@ public class TheaterActivity extends AppCompatActivity{
             }
         });
 
+        mLeftGenreButton = (Button) findViewById(R.id.left_genre_button);
+        mRightGenreButton = (Button) findViewById(R.id.right_genre_button);
+
+        mLeftGenreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //LayoutInflater inflater = LayoutInflater.from(TheaterActivity.this);
+                //final View genrePicker = inflater.inflate(R.layout.genre_picker, null);
+
+                GenrePickerFragment gp = new GenrePickerFragment();
+                
+
+                //gp.setTargetFragment();
+                //gp.show(manager, DIALOG_GENRE);
+
+
+
+
+                /*AlertDialog ad = new AlertDialog.Builder(TheaterActivity.this)
+                        .setView(genrePicker)
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                            }
+                        })
+                        .setNegativeButton(null, null).create();
+
+                ad.show();
+                */
+            }
+        });
+
+        mRightGenreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         // TODO: Populate movie lists
         // TODO: Make DatePicker
 
@@ -188,4 +237,23 @@ public class TheaterActivity extends AppCompatActivity{
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != Activity.RESULT_OK){
+            return;
+        }
+
+        if (requestCode == REQUEST_DATE){
+
+        }
+        else if (requestCode == REQUEST_GENRE_LEFT){
+            String genre = data.getStringExtra(GenrePickerFragment.EXTRA_GENRE);
+            boolean isMovie = data.getBooleanExtra(GenrePickerFragment.EXTRA_IS_MOVIE, false);
+        }
+        else if (requestCode == REQUEST_GENRE_RIGHT){
+            String genre = data.getStringExtra(GenrePickerFragment.EXTRA_GENRE);
+            boolean isMovie = data.getBooleanExtra(GenrePickerFragment.EXTRA_IS_MOVIE, false);
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package com.fandb.twovietimes;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +23,11 @@ import java.util.List;
  */
 public class GenrePickerFragment extends DialogFragment {
 
+    public static final String EXTRA_GENRE = "com.fandb.twoietimes.genre";
+    public static final String EXTRA_IS_MOVIE = "com.fandb.twoietimes.isMovie";
+
+    private Boolean selectedMovies;
+
     private LinearLayout mButtonLayout;
 
     private RecyclerView mGenreRecycleView;
@@ -34,6 +41,8 @@ public class GenrePickerFragment extends DialogFragment {
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.genre_picker, null);
 
+        selectedMovies = null;
+
         mGenreRecycleView = (RecyclerView) v.findViewById(R.id.genre_recycler_view);
         mGenreRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -45,14 +54,32 @@ public class GenrePickerFragment extends DialogFragment {
         mMovieButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedMovies = true;
 
+                //for testing: begin
+                ArrayList<String> stuffForTesting = new ArrayList<String>();
+                stuffForTesting.add("Back to the Future");
+                stuffForTesting.add("Step Brothers");
+                stuffForTesting.add("Borat");
+                //for testing: end
+
+                updateUIWithGenres(stuffForTesting);
             }
         });
 
         mGenreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedMovies = false;
 
+                //for testing: begin
+                ArrayList<String> stuffForTesting = new ArrayList<String>();
+                stuffForTesting.add("Action");
+                stuffForTesting.add("Comedy");
+                stuffForTesting.add("Drama");
+                //for testing: end
+
+                updateUIWithGenres(stuffForTesting);
             }
         });
 
@@ -61,7 +88,6 @@ public class GenrePickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.date_picker_title)
-                .setPositiveButton(android.R.string.ok, null)
                 .create();
     }
 
@@ -93,6 +119,8 @@ public class GenrePickerFragment extends DialogFragment {
         @Override
         public void onClick(View v) {
             //stuff goes here
+            sendResult(Activity.RESULT_OK, mGenre, selectedMovies);
+
         }
     }
     private class GenreAdapter extends RecyclerView.Adapter<GenreHolder> {
@@ -119,5 +147,17 @@ public class GenrePickerFragment extends DialogFragment {
         public int getItemCount() {
             return mGenres.size();
         }
+    }
+
+    private void sendResult(int resultCode, String genre, boolean isMovie) {
+        if (getTargetFragment() == null) {
+            return;
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_GENRE, genre);
+        intent.putExtra(EXTRA_IS_MOVIE, isMovie);
+
+        getTargetFragment().onActivityResult(getTargetRequestCode(), resultCode, intent);
     }
 }
