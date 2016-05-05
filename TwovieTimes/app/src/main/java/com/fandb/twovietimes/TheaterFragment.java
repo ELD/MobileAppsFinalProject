@@ -54,6 +54,12 @@ public class TheaterFragment extends Fragment {
 
     private Date mMovieDate;
 
+    //these probably won't be in the final design, but this is where these values are stored for now:
+    private String leftSelectedMovieOrGenre;
+    private boolean leftSelectionIsMovie;
+    private String rightSelectedMovieOrGenre;
+    private boolean rightSelectionIsMovie;
+
     public static TheaterFragment newInstance(UUID theaterId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_THEATER_ID, theaterId);
@@ -134,35 +140,18 @@ public class TheaterFragment extends Fragment {
         mLeftGenreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //LayoutInflater inflater = LayoutInflater.from(getActivity());
-                //final View genrePicker = inflater.inflate(R.layout.genre_picker, null);
-
                 GenrePickerFragment gp = new GenrePickerFragment();
                 gp.setTargetFragment(TheaterFragment.this, REQUEST_GENRE_LEFT);
                 gp.show(getFragmentManager(), DIALOG_GENRE);
-
-
-
-
-                /*AlertDialog ad = new AlertDialog.Builder(getActivity())
-                        .setView(genrePicker)
-                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                            }
-                        })
-                        .setNegativeButton(null, null).create();
-
-                ad.show();
-                */
             }
         });
 
         mRightGenreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                GenrePickerFragment gp = new GenrePickerFragment();
+                gp.setTargetFragment(TheaterFragment.this, REQUEST_GENRE_RIGHT);
+                gp.show(getFragmentManager(), DIALOG_GENRE);
             }
         });
 
@@ -259,10 +248,13 @@ public class TheaterFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult: HELLOOOO request code: " + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode != Activity.RESULT_OK){
+        if (resultCode != Activity.RESULT_OK){
+            Log.d(TAG, "onActivityResult: HELLOOOO BAD");
             return;
         }
+
 
         if (requestCode == REQUEST_DATE){
 
@@ -270,10 +262,33 @@ public class TheaterFragment extends Fragment {
         else if (requestCode == REQUEST_GENRE_LEFT){
             String genre = data.getStringExtra(GenrePickerFragment.EXTRA_GENRE);
             boolean isMovie = data.getBooleanExtra(GenrePickerFragment.EXTRA_IS_MOVIE, false);
+
+            leftSelectedMovieOrGenre = genre;
+            leftSelectionIsMovie = isMovie;
+
+            String[] genreWords = genre.split(" ");
+            if (isMovie){
+                mLeftGenreButton.setText(genreWords[0] + " " + genreWords[1] + "...");
+            }
+            else{
+                mLeftGenreButton.setText(genre);
+            }
+
         }
         else if (requestCode == REQUEST_GENRE_RIGHT){
             String genre = data.getStringExtra(GenrePickerFragment.EXTRA_GENRE);
             boolean isMovie = data.getBooleanExtra(GenrePickerFragment.EXTRA_IS_MOVIE, false);
+
+            rightSelectedMovieOrGenre = genre;
+            rightSelectionIsMovie = isMovie;
+
+            String[] genreWords = genre.split(" ");
+            if (isMovie){
+                mRightGenreButton.setText(genreWords[0] + " " + genreWords[1] + "...");
+            }
+            else{
+                mRightGenreButton.setText(genre);
+            }
         }
     }
 }

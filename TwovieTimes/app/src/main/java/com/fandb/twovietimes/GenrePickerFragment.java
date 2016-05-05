@@ -1,7 +1,9 @@
 package com.fandb.twovietimes;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -79,6 +81,12 @@ public class GenrePickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
                 .setTitle(R.string.date_picker_title)
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendResult(Activity.RESULT_OK, mGenreAdapter.getSelectedGenre(), selectedMovies);
+                    }
+                })
                 .create();
     }
 
@@ -110,20 +118,19 @@ public class GenrePickerFragment extends DialogFragment {
             if (currentSelected != null){
                 if (currentSelected.equals(position)){
                     mLayout.setBackgroundColor(0xFF00FF00);
+                    Log.d("HEY", "bindGenre: currentSelected: " + currentSelected + " my position:" + position);
+                }
+                else{
+                    mLayout.setBackgroundColor(0xFFFFFFFF);
                 }
             }
         }
 
         @Override
         public void onClick(View v) {
-            //stuff goes here
-            //mLayout.setBackgroundColor(getResources().getColor(R.color.colorGray));
-            //mLayout.setBackgroundColor(0xFF00FF00);
-            //sendResult(Activity.RESULT_OK, mGenre, selectedMovies);
             Log.d("STUFF", "onClick: CALLED position: " + getLayoutPosition());
             mGenreAdapter.setSelected(getLayoutPosition());
-            mGenreAdapter.notifyDataSetChanged();
-            //mGenreAdapter.notifyAll();
+            mGenreAdapter.notifyItemRangeChanged(0, mGenreAdapter.getItemCount() - 2);
 
         }
     }
@@ -137,6 +144,13 @@ public class GenrePickerFragment extends DialogFragment {
 
         public GenreAdapter(List<String> genres) {
             mGenres = genres;
+        }
+
+        public String getSelectedGenre(){
+            if (mSelected == null){
+                return null;
+            }
+            return mGenres.get(mSelected);
         }
 
         @Override
@@ -162,7 +176,6 @@ public class GenrePickerFragment extends DialogFragment {
         if (getTargetFragment() == null) {
             return;
         }
-
         Intent intent = new Intent();
         intent.putExtra(EXTRA_GENRE, genre);
         intent.putExtra(EXTRA_IS_MOVIE, isMovie);
