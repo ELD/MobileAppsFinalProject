@@ -130,7 +130,6 @@ public class GenrePickerFragment extends DialogFragment {
         public void onClick(View v) {
             Log.d("STUFF", "onClick: CALLED position: " + getLayoutPosition());
             mGenreAdapter.setSelected(getLayoutPosition());
-            mGenreAdapter.notifyItemRangeChanged(0, mGenreAdapter.getItemCount() - 2);
 
         }
     }
@@ -140,6 +139,7 @@ public class GenrePickerFragment extends DialogFragment {
 
         public void setSelected(int selected){
             mSelected = selected;
+            notifyDataSetChanged();
         }
 
         public GenreAdapter(List<String> genres) {
