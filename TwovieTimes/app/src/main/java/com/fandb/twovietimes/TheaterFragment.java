@@ -268,7 +268,8 @@ public class TheaterFragment extends Fragment {
 
             String[] genreWords = genre.split(" ");
             if (isMovie){
-                mLeftGenreButton.setText(genreWords[0] + " " + genreWords[1] + "...");
+                //mLeftGenreButton.setText(genreWords[0] + " " + genreWords[1] + "...");
+                mLeftGenreButton.setText(genre.substring(0, 11) + "...");
             }
             else{
                 mLeftGenreButton.setText(genre);
@@ -284,7 +285,8 @@ public class TheaterFragment extends Fragment {
 
             String[] genreWords = genre.split(" ");
             if (isMovie){
-                mRightGenreButton.setText(genreWords[0] + " " + genreWords[1] + "...");
+                //mRightGenreButton.setText(genreWords[0] + " " + genreWords[1] + "...");
+                mRightGenreButton.setText(genre.substring(0, 11) + "...");
             }
             else{
                 mRightGenreButton.setText(genre);

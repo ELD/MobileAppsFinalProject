@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/movies_at_text"
             android:id="@+id/textView"
@@ -51,20 +51,32 @@
         android:id="@+id/select_movies_bar"
         android:layout_gravity="center_horizontal">
 
+        <TextView
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/movie_matching_title"
+            android:layout_rowWeight="1"
+            android:layout_gravity="center_vertical"
+            />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_movie_button"
-            android:layout_marginLeft="20dp"
-            android:id="@+id/left_genre_button"/>
+            android:id="@+id/left_genre_button"
+            android:layout_rowWeight="1"/>
+        <ImageView
+            android:src="@drawable/ic_action_plus"
+            android:layout_gravity="center"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="@string/select_movie_button"
-            android:layout_marginRight="20dp"
-            android:id="@+id/right_genre_button"/>
+            android:layout_marginRight="10dp"
+            android:id="@+id/right_genre_button"
+            android:layout_rowWeight="1"/>
     </GridLayout>
 
     <GridLayout

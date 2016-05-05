@@ -10,4 +10,5 @@
     <string name="select_movie_title">Movie</string>
     <string name="genre_selector_title">Select:</string>
     <string name="settings_name">Settings</string>
+    <string name="movie_matching_title">Matching</string>
 </resources>
