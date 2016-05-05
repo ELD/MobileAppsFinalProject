@@ -9,4 +9,5 @@
     <string name="select_genre_title">Genre</string>
     <string name="select_movie_title">Movie</string>
     <string name="genre_selector_title">Select:</string>
+    <string name="settings_name">Settings</string>
 </resources>

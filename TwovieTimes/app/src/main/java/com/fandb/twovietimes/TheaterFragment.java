@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -64,6 +67,8 @@ public class TheaterFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID theaterId = (UUID) getArguments().getSerializable(ARG_THEATER_ID);
         mTheater = TheaterList.get(getActivity()).getTheater(theaterId);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -208,6 +213,23 @@ public class TheaterFragment extends Fragment {
             mMoviePairView.invalidate();
         }
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.app_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.settings_button:
+                // TODO: Launch settings activity?
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private class MoviePairAdapter extends RecyclerView.Adapter<MoviePairHolder> {
