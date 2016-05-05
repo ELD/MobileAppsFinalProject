@@ -1,6 +1,5 @@
 package com.fandb.twovietimes;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,29 +93,45 @@ public class GenrePickerFragment extends DialogFragment {
         private String mGenre;
 
         private TextView mGenreTextView;
+        private LinearLayout mLayout;
 
         public GenreHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
             mGenreTextView = (TextView) itemView.findViewById(R.id.genre_title);
+            mLayout = (LinearLayout) itemView.findViewById(R.id.genre_list_item_layout);
 
         }
 
-        public void bindGenre(String genre) {
+        public void bindGenre(String genre, Integer currentSelected) {
             mGenre = genre;
             mGenreTextView.setText(genre);
+            if (currentSelected == getAdapterPosition()){
+                mLayout.setBackgroundColor(0xFF00FF00);
+            }
         }
 
         @Override
         public void onClick(View v) {
             //stuff goes here
-            sendResult(Activity.RESULT_OK, mGenre, selectedMovies);
+            //mLayout.setBackgroundColor(getResources().getColor(R.color.colorGray));
+            //mLayout.setBackgroundColor(0xFF00FF00);
+            //sendResult(Activity.RESULT_OK, mGenre, selectedMovies);
+            Log.d("STUFF", "onClick: CALLED");
+            mGenreAdapter.setSelected(getAdapterPosition());
+            mGenreAdapter.notifyDataSetChanged();
+            mGenreAdapter.notifyAll();
 
         }
     }
     private class GenreAdapter extends RecyclerView.Adapter<GenreHolder> {
         private List<String> mGenres;
+        private Integer mSelected;
+
+        public void setSelected(int selected){
+            mSelected = selected;
+        }
 
         public GenreAdapter(List<String> genres) {
             mGenres = genres;
@@ -131,7 +147,7 @@ public class GenrePickerFragment extends DialogFragment {
         @Override
         public void onBindViewHolder(GenreHolder holder, int position) {
             String genre = mGenres.get(position);
-            holder.bindGenre(genre);
+            holder.bindGenre(genre, mSelected);
         }
 
         @Override

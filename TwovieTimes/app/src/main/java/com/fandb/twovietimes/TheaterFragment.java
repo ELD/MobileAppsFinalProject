@@ -138,11 +138,8 @@ public class TheaterFragment extends Fragment {
                 //final View genrePicker = inflater.inflate(R.layout.genre_picker, null);
 
                 GenrePickerFragment gp = new GenrePickerFragment();
-
+                gp.setTargetFragment(TheaterFragment.this, REQUEST_GENRE_LEFT);
                 gp.show(getFragmentManager(), DIALOG_GENRE);
-
-                //gp.setTargetFragment();
-                //gp.show(manager, DIALOG_GENRE);
 
 
 
