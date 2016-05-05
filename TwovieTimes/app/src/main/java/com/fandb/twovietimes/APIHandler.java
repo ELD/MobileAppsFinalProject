@@ -39,10 +39,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Steve on 4/22/2016.
@@ -208,6 +212,65 @@ public class APIHandler {
 
             mMovies.put(mt.title, new Movie(mt.title, mt.genres, mt.releaseDate, mt.longDescription, mt.shortDescription, mt.directors, mt.officalUrl, mt.runTime, rat));
         }
+    }
+
+    public static ArrayList<String> getGenres(){
+        ArrayList<String> ret = new ArrayList<String>();
+
+        Iterator it = mMovies.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            it.remove();
+
+            Movie m = (Movie)pair.getValue();
+
+            if(m.getGenres() == null) continue;
+            for(String genre: m.getGenres()){
+                if(ret.contains(genre)) continue;
+                else ret.add(genre);
+            }
+
+        }
+        Collections.sort(ret);
+        return ret;
+    }
+
+    public static ArrayList<String> getMoviesByGenre(String genre){
+        ArrayList<String> ret = new ArrayList<String>();
+
+        Iterator it = mMovies.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            it.remove();
+
+            Movie m =  (Movie)pair.getValue();
+
+            if(Arrays.asList(m.getGenres()).contains(genre)){
+                if(ret.contains((String)pair.getKey())) continue;
+                else ret.add((String)pair.getKey());
+            }
+
+
+        }
+
+        Collections.sort(ret);
+        return ret;
+    }
+
+    public static ArrayList<String> getMovieNames(){
+        ArrayList<String> ret = new ArrayList<String>();
+
+        Iterator it = mMovies.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            it.remove();
+
+            if(ret.contains((String)pair.getKey())) continue;
+            else ret.add((String)pair.getKey());
+
+        }
+        Collections.sort(ret);
+        return ret;
     }
 
     private static String getDate(Date d, boolean output) {

@@ -57,11 +57,7 @@ public class GenrePickerFragment extends DialogFragment {
                 selectedMovies = true;
 
                 //for testing: begin
-                ArrayList<String> stuffForTesting = new ArrayList<String>();
-                stuffForTesting.add("Back to the Future");
-                stuffForTesting.add("Step Brothers");
-                stuffForTesting.add("Borat");
-                //for testing: end
+                ArrayList<String> stuffForTesting = APIHandler.getMovieNames();
 
                 updateUIWithGenres(stuffForTesting);
             }
@@ -72,12 +68,7 @@ public class GenrePickerFragment extends DialogFragment {
             public void onClick(View v) {
                 selectedMovies = false;
 
-                //for testing: begin
-                ArrayList<String> stuffForTesting = new ArrayList<String>();
-                stuffForTesting.add("Action");
-                stuffForTesting.add("Comedy");
-                stuffForTesting.add("Drama");
-                //for testing: end
+                ArrayList<String> stuffForTesting = APIHandler.getGenres();
 
                 updateUIWithGenres(stuffForTesting);
             }

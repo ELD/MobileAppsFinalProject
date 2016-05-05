@@ -14,6 +14,7 @@ public class Movie{
     private String mDur;
     private MovieTime.Rating mRat;
 
+
     public Movie(String mTitle, String[] genres, String releaseDate, String mLongDescrip, String mShortDescrip, String[] mDirectors, String mURL, String mDur, MovieTime.Rating mRat) {
         this.mTitle = mTitle;
         this.genres = genres;
@@ -27,4 +28,39 @@ public class Movie{
     }
 
 
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public String[] getGenres() {
+        return genres;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public String getmLongDescrip() {
+        return mLongDescrip;
+    }
+
+    public String getmShortDescrip() {
+        return mShortDescrip;
+    }
+
+    public String[] getmDirectors() {
+        return mDirectors;
+    }
+
+    public String getmURL() {
+        return mURL;
+    }
+
+    public String getmDur() {
+        return mDur;
+    }
+
+    public MovieTime.Rating getmRat() {
+        return mRat;
+    }
 }
