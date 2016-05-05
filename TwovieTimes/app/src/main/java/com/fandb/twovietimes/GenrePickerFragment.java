@@ -104,11 +104,13 @@ public class GenrePickerFragment extends DialogFragment {
 
         }
 
-        public void bindGenre(String genre, Integer currentSelected) {
+        public void bindGenre(String genre, Integer currentSelected, int position) {
             mGenre = genre;
             mGenreTextView.setText(genre);
-            if (currentSelected == getAdapterPosition()){
-                mLayout.setBackgroundColor(0xFF00FF00);
+            if (currentSelected != null){
+                if (currentSelected.equals(position)){
+                    mLayout.setBackgroundColor(0xFF00FF00);
+                }
             }
         }
 
@@ -118,10 +120,10 @@ public class GenrePickerFragment extends DialogFragment {
             //mLayout.setBackgroundColor(getResources().getColor(R.color.colorGray));
             //mLayout.setBackgroundColor(0xFF00FF00);
             //sendResult(Activity.RESULT_OK, mGenre, selectedMovies);
-            Log.d("STUFF", "onClick: CALLED");
-            mGenreAdapter.setSelected(getAdapterPosition());
+            Log.d("STUFF", "onClick: CALLED position: " + getLayoutPosition());
+            mGenreAdapter.setSelected(getLayoutPosition());
             mGenreAdapter.notifyDataSetChanged();
-            mGenreAdapter.notifyAll();
+            //mGenreAdapter.notifyAll();
 
         }
     }
@@ -147,7 +149,7 @@ public class GenrePickerFragment extends DialogFragment {
         @Override
         public void onBindViewHolder(GenreHolder holder, int position) {
             String genre = mGenres.get(position);
-            holder.bindGenre(genre, mSelected);
+            holder.bindGenre(genre, mSelected, position);
         }
 
         @Override
