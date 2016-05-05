@@ -142,7 +142,7 @@ public class TheaterListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(mDisabled) return;
-            Intent intent = TheaterActivity.newIntent(getActivity(), mTheater.getId());
+            Intent intent = TheaterFragmentActivity.newIntent(getActivity(), mTheater.getId());
             startActivity(intent);
             //mCallbacks.onTheaterSelected(mTheater);
         }

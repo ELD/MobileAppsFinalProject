@@ -1,12 +1,12 @@
 package com.fandb.twovietimes;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,12 +25,11 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by Alex on 4/6/16.
+ * Created by eric on 5/5/16.
  */
-public class TheaterActivity extends AppCompatActivity{
-
+public class TheaterFragment extends Fragment {
+    public static String ARG_THEATER_ID = "theater_id";
     private static final String TAG = "THEATER_ACTIVITY";
-    private static final String EXTRA_THEATER_ID = "com.fandb.twovietimes.theater_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String DIALOG_GENRE = "DialogGenre";
     private static final int REQUEST_TIME = 0;
@@ -52,41 +51,40 @@ public class TheaterActivity extends AppCompatActivity{
 
     private Date mMovieDate;
 
-    public static Intent newIntent(Context packageContext, UUID theaterId) {
-        Intent intent = new Intent(packageContext, TheaterActivity.class);
-        intent.putExtra(EXTRA_THEATER_ID, theaterId);
-        return intent;
+    public static TheaterFragment newInstance(UUID theaterId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_THEATER_ID, theaterId);
+        TheaterFragment fragment = new TheaterFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
-/*
+
     @Override
-    protected Fragment createFragment() {
-        UUID theaterId = (UUID) getIntent().getSerializableExtra(EXTRA_THEATER_ID);
-        return TheaterFragment.newInstance(theaterId);
-    }
-*/
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_theater);
+        UUID theaterId = (UUID) getArguments().getSerializable(ARG_THEATER_ID);
+        mTheater = TheaterList.get(getActivity()).getTheater(theaterId);
+    }
 
-        UUID theaterId = (UUID) getIntent().getSerializableExtra(EXTRA_THEATER_ID);
-        mTheater = TheaterList.get(this).getTheater(theaterId);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_theater, container, false);
 
-        mMovieRecylcerView = (RecyclerView) findViewById(R.id.theater_movie_times_recycler_view);
-        mMovieRecylcerView.setLayoutManager(new LinearLayoutManager(this));
+        mMovieRecylcerView = (RecyclerView) v.findViewById(R.id.theater_movie_times_recycler_view);
+        mMovieRecylcerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mLaterButton = (Button) findViewById(R.id.movies_later_button);
+        mLaterButton = (Button) v.findViewById(R.id.movies_later_button);
         mLaterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                TimePickerFragment tpf = new TimePickerFragment();
 //
 //                tpf.show(getSupportFragmentManager(), DIALOG_DATE);
-                LayoutInflater inflater = LayoutInflater.from(TheaterActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(getActivity());
                 final View timepicker = inflater.inflate(R.layout.date_picker, null);
 
                 final DatePicker picker = (DatePicker) timepicker.findViewById(R.id.dialog_date_picker);
-                AlertDialog ad = new AlertDialog.Builder(TheaterActivity.this)
+                AlertDialog ad = new AlertDialog.Builder(getActivity())
                         .setTitle(R.id.dialog_date_picker)
                         .setView(timepicker)
                         .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
@@ -107,7 +105,7 @@ public class TheaterActivity extends AppCompatActivity{
             }
         });
 
-        mGetMoviesButton = (Button) findViewById(R.id.get_movie_times);
+        mGetMoviesButton = (Button) v.findViewById(R.id.get_movie_times);
         mGetMoviesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +113,7 @@ public class TheaterActivity extends AppCompatActivity{
             }
         });
 
-        mNowCheckbox = (CheckBox) findViewById(R.id.movies_now_checkbox);
+        mNowCheckbox = (CheckBox) v.findViewById(R.id.movies_now_checkbox);
         mNowCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -125,18 +123,18 @@ public class TheaterActivity extends AppCompatActivity{
             }
         });
 
-        mLeftGenreButton = (Button) findViewById(R.id.left_genre_button);
-        mRightGenreButton = (Button) findViewById(R.id.right_genre_button);
+        mLeftGenreButton = (Button) v.findViewById(R.id.left_genre_button);
+        mRightGenreButton = (Button) v.findViewById(R.id.right_genre_button);
 
         mLeftGenreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //LayoutInflater inflater = LayoutInflater.from(TheaterActivity.this);
+                //LayoutInflater inflater = LayoutInflater.from(getActivity());
                 //final View genrePicker = inflater.inflate(R.layout.genre_picker, null);
 
                 GenrePickerFragment gp = new GenrePickerFragment();
 
-                gp.show(getSupportFragmentManager(), DIALOG_GENRE);
+                gp.show(getFragmentManager(), DIALOG_GENRE);
 
                 //gp.setTargetFragment();
                 //gp.show(manager, DIALOG_GENRE);
@@ -144,7 +142,7 @@ public class TheaterActivity extends AppCompatActivity{
 
 
 
-                /*AlertDialog ad = new AlertDialog.Builder(TheaterActivity.this)
+                /*AlertDialog ad = new AlertDialog.Builder(getActivity())
                         .setView(genrePicker)
                         .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                             @Override
@@ -170,10 +168,12 @@ public class TheaterActivity extends AppCompatActivity{
         // TODO: Make DatePicker
 
         updateUI();
+
+        return v;
     }
 
     public void updateUI() {
-        MoviePairList moviePairList = MoviePairList.get(this);
+        MoviePairList moviePairList = MoviePairList.get(getActivity());
         List<MoviePair> moviePairs = moviePairList.getMoviePairs();
 
         if (mMovieAdapter == null) {
@@ -184,7 +184,6 @@ public class TheaterActivity extends AppCompatActivity{
             mMovieAdapter.notifyDataSetChanged();
         }
     }
-
 
     private class MoviePairHolder extends RecyclerView.ViewHolder {
         //private MoviePair mMoviePair;
@@ -199,7 +198,10 @@ public class TheaterActivity extends AppCompatActivity{
         }
         public void bindMoviePair(MoviePair pair) {
             FrameLayout holder = (FrameLayout) itemView.findViewById(R.id.holder);
-            mMoviePairView = new MoviePairView(itemView.getContext(), pair, getWindowManager().getDefaultDisplay().getWidth());
+            mMoviePairView = new MoviePairView(itemView.getContext(),
+                    pair,
+                    getActivity().getWindowManager().getDefaultDisplay().getWidth()
+            );
 
             holder.addView(mMoviePairView);
 
@@ -217,7 +219,7 @@ public class TheaterActivity extends AppCompatActivity{
 
         @Override
         public MoviePairHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(TheaterActivity.this);
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater.inflate(R.layout.movie_pair_holder, parent, false);
 
 
@@ -234,12 +236,10 @@ public class TheaterActivity extends AppCompatActivity{
         public int getItemCount() {
             return mMoviePairs.size();
         }
-
-
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode != Activity.RESULT_OK){
             return;
