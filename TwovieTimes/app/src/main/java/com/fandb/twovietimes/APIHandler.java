@@ -220,7 +220,6 @@ public class APIHandler {
         Iterator it = mMovies.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
-            it.remove();
 
             Movie m = (Movie)pair.getValue();
 
@@ -241,7 +240,6 @@ public class APIHandler {
         Iterator it = mMovies.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
-            it.remove();
 
             Movie m =  (Movie)pair.getValue();
 
@@ -263,7 +261,6 @@ public class APIHandler {
         Iterator it = mMovies.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
-            it.remove();
 
             if(ret.contains((String)pair.getKey())) continue;
             else ret.add((String)pair.getKey());
