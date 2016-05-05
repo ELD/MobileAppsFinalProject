@@ -22,6 +22,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,6 +69,7 @@ public class APIHandler {
     public static String mZip;
     public static int mRadius = 5;
     public static int mDays = 1;
+    public static int mTimeTolerance = 30;
 
     //Title -> Movie
     public static HashMap<String, Movie> mMovies = new HashMap<String, Movie>();
@@ -247,8 +249,6 @@ public class APIHandler {
                 if(ret.contains((String)pair.getKey())) continue;
                 else ret.add((String)pair.getKey());
             }
-
-
         }
 
         Collections.sort(ret);
@@ -280,12 +280,12 @@ public class APIHandler {
     private static String readFile() {
         String json = "";
         try {
-            FileInputStream inputFile = mContext.openFileInput(getDate(mDate, true) + ".txt");
+            BufferedReader inputFile = new BufferedReader(new InputStreamReader(mContext.openFileInput(getDate(mDate, true) + ".txt")));
 
-            int line;
+            String line;
 
-            while ((line = inputFile.read()) != -1) {
-                json += (char) line;
+            while ((line = inputFile.readLine()) != null) {
+                json += line;
             }
             inputFile.close();
             json = json.replace("\n", "");
