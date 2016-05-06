@@ -11,4 +11,5 @@
     <string name="genre_selector_title">Select:</string>
     <string name="settings_name">Settings</string>
     <string name="movie_matching_title">Matching</string>
+    <string name="location">Change Location</string>
 </resources>
