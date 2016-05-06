@@ -78,6 +78,53 @@ public class APIHandler {
     //TheatreId -> Theater
     public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
+    public static ArrayList<MoviePair> getMoviePairs(String mov1, String mov2){
+        ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
+
+        ArrayList<MovieTime> mt = new ArrayList<MovieTime>();
+
+        Iterator it = mMovieTimes.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+
+            MovieTime m = (MovieTime) pair.getValue();
+
+            if(m.getTitle() != mov1 || m.getTitle() != mov2) continue;
+            else if(!mt.contains(m)) mt.add(m);
+
+        }
+
+        ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
+        for(MovieTime m : mt){
+            checked.add(m);
+            for(MovieTime a : mt){
+                if(checked.contains(a)) continue;
+                float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
+                float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
+                if(beg > mTimeTolerance || end > mTimeTolerance) continue;
+                else mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
+
+            }
+        }
+
+        mp.
+
+        return mp;
+    }
+
+    public static Movie getMovieByTime(MovieTime mt){
+        Iterator it = mMovieTimes.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+
+
+            Movie mo = (Movie) pair.getValue();
+
+            if(mo.getTitle() == mt.getTitle()) return mo;
+
+        }
+        return null;
+    }
 
     public static String getAddress(String link, String theatre) throws IOException {
         if (mTheaters.containsKey(theatre)) {
@@ -216,18 +263,18 @@ public class APIHandler {
         }
     }
 
-    public static ArrayList<String> getGenres(){
+    public static ArrayList<String> getGenres() {
         ArrayList<String> ret = new ArrayList<String>();
 
         Iterator it = mMovies.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
 
-            Movie m = (Movie)pair.getValue();
+            Movie m = (Movie) pair.getValue();
 
-            if(m.getGenres() == null) continue;
-            for(String genre: m.getGenres()){
-                if(ret.contains(genre)) continue;
+            if (m.getGenres() == null) continue;
+            for (String genre : m.getGenres()) {
+                if (ret.contains(genre)) continue;
                 else ret.add(genre);
             }
 
@@ -236,18 +283,18 @@ public class APIHandler {
         return ret;
     }
 
-    public static ArrayList<String> getMoviesByGenre(String genre){
+    public static ArrayList<String> getMoviesByGenre(String genre) {
         ArrayList<String> ret = new ArrayList<String>();
 
         Iterator it = mMovies.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
 
-            Movie m =  (Movie)pair.getValue();
+            Movie m = (Movie) pair.getValue();
 
-            if(Arrays.asList(m.getGenres()).contains(genre)){
-                if(ret.contains((String)pair.getKey())) continue;
-                else ret.add((String)pair.getKey());
+            if (Arrays.asList(m.getGenres()).contains(genre)) {
+                if (ret.contains((String) pair.getKey())) continue;
+                else ret.add((String) pair.getKey());
             }
         }
 
@@ -255,15 +302,15 @@ public class APIHandler {
         return ret;
     }
 
-    public static ArrayList<String> getMovieNames(){
+    public static ArrayList<String> getMovieNames() {
         ArrayList<String> ret = new ArrayList<String>();
 
         Iterator it = mMovies.entrySet().iterator();
-        while(it.hasNext()){
-            Map.Entry pair = (Map.Entry)it.next();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
 
-            if(ret.contains((String)pair.getKey())) continue;
-            else ret.add((String)pair.getKey());
+            if (ret.contains((String) pair.getKey())) continue;
+            else ret.add((String) pair.getKey());
 
         }
         Collections.sort(ret);
@@ -315,41 +362,65 @@ public class APIHandler {
 
     private static String getZipCodeFromLocation(Location location) {
         Address addr = getAddressFromLocation(location);
+        if (addr.getPostalCode() == null) {
+            Log.d(TAG, "Postal code is null, using 80401");
+        }
         return addr.getPostalCode() == null ? "80401" : addr.getPostalCode();
     }
 
     private static Address getAddressFromLocation(Location location) {
-        Geocoder geocoder = new Geocoder(mContext);
+        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
         Address address = new Address(Locale.getDefault());
         try {
+            Log.d(TAG, "hjkhjk");
             List<Address> addr = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            Log.d(TAG, String.valueOf(addr));
             if (addr.size() > 0) {
                 address = addr.get(0);
-            }
-        } catch (IOException e) {
+            } else address = addr.get(0);
+        } catch (Exception e) {
+            Log.d(TAG, String.valueOf(e));
             Log.d(TAG, "Could not get location from long and lat");
         }
         return address;
     }
-
     private static void getZipCode() {
+
         try {
-            LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-                Log.d(TAG, "Requesting Location permission");
-                mZip = "";
+            LocationManager mLocationManager;
+            mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            List<String> providers = mLocationManager.getProviders(true);
+            Location bestLocation = null;
+            for (String provider : providers) {
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                    Log.d(TAG, "Waiting for permission");
+                    mZip = "";
+                    return;
+                }
+                Location l = mLocationManager.getLastKnownLocation(provider);
+                if (l == null) {
+                    Log.d(TAG, "Null");
+                    continue;
+                }
+                if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                    // Found best last known location: %s", l);
+                    bestLocation = l;
+                }
+            }
+            if(bestLocation == null){
+                Log.d(TAG, "location is null");
+                mZip = "80401";
                 return;
             }
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            mZip = getZipCodeFromLocation(location);
+            mZip = getZipCodeFromLocation(bestLocation);
         }catch(Exception e){
             Log.d(TAG, "Could not get location manager");
             mZip = "80401";
