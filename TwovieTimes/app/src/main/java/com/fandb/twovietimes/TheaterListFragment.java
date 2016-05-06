@@ -39,6 +39,8 @@ import java.util.List;
  * Created by Alex on 4/6/16.
  */
 public class TheaterListFragment extends Fragment {
+    private static String TAG = "TheaterListFragment";
+
     private RecyclerView mTheaterRecyclerView;
     private TheaterAdapter mAdapter;
     private Callbacks mCallbacks;
@@ -111,6 +113,10 @@ public class TheaterListFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.settings_button:
                 // TODO: Launch settings activity?
+                return true;
+            case R.id.loc_checkin:
+                // TODO: STEVE: Switch location, refresh data
+                Log.d(TAG, "onOptionsItemSelected: Switching Locations");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
