@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -74,6 +76,8 @@ public class TheaterFragment extends Fragment {
         UUID theaterId = (UUID) getArguments().getSerializable(ARG_THEATER_ID);
         mTheater = TheaterList.get(getActivity()).getTheater(theaterId);
 
+        mMovieDate = new Date();
+
         setHasOptionsMenu(true);
     }
 
@@ -88,31 +92,11 @@ public class TheaterFragment extends Fragment {
         mLaterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                TimePickerFragment tpf = new TimePickerFragment();
-//
-//                tpf.show(getSupportFragmentManager(), DIALOG_DATE);
-                LayoutInflater inflater = LayoutInflater.from(getActivity());
-                final View timepicker = inflater.inflate(R.layout.date_picker, null);
+                Log.d(TAG, "onClick: Spawn date picker!");
+                TimePickerFragment dialog = TimePickerFragment.newInstance(mMovieDate);
+                dialog.setTargetFragment(TheaterFragment.this, REQUEST_TIME);
 
-                final DatePicker picker = (DatePicker) timepicker.findViewById(R.id.dialog_date_picker);
-                AlertDialog ad = new AlertDialog.Builder(getActivity())
-                        .setTitle(R.id.dialog_date_picker)
-                        .setView(timepicker)
-                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Calendar cal = Calendar.getInstance();
-                                cal.clear();
-                                cal.set(Calendar.YEAR, picker.getYear());
-                                cal.set(Calendar.MONTH, picker.getMonth());
-                                cal.set(Calendar.DAY_OF_MONTH, picker.getDayOfMonth());
-                                mMovieDate = cal.getTime();
-                                Log.d(TAG, mMovieDate.toString());
-                            }
-                        })
-                        .setNegativeButton(null, null).create();
-
-                ad.show();
+                dialog.show(getFragmentManager(), DIALOG_DATE);
             }
         });
 
@@ -253,13 +237,11 @@ public class TheaterFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK){
             Log.d(TAG, "onActivityResult: HELLOOOO BAD");
             return;
-        }
-
-
-        if (requestCode == REQUEST_DATE){
-
-        }
-        else if (requestCode == REQUEST_GENRE_LEFT){
+        } else if (requestCode == REQUEST_DATE){
+            Date date = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_DATE);
+            mMovieDate = date;
+            Log.d(TAG, "onActivityResult: " + mMovieDate);
+        } else if (requestCode == REQUEST_GENRE_LEFT){
             String genre = data.getStringExtra(GenrePickerFragment.EXTRA_GENRE);
             boolean isMovie = data.getBooleanExtra(GenrePickerFragment.EXTRA_IS_MOVIE, false);
 
@@ -281,8 +263,7 @@ public class TheaterFragment extends Fragment {
                 mLeftGenreButton.setText(genre);
             }
 
-        }
-        else if (requestCode == REQUEST_GENRE_RIGHT){
+        } else if (requestCode == REQUEST_GENRE_RIGHT){
             String genre = data.getStringExtra(GenrePickerFragment.EXTRA_GENRE);
             boolean isMovie = data.getBooleanExtra(GenrePickerFragment.EXTRA_IS_MOVIE, false);
 
@@ -298,8 +279,7 @@ public class TheaterFragment extends Fragment {
                 else{
                     mRightGenreButton.setText(genre);
                 }
-            }
-            else{
+            } else {
                 mRightGenreButton.setText(genre);
             }
         }
