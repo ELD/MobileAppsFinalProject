@@ -42,13 +42,11 @@ public class MoviePairView extends View {
             canvas.drawText(mMoviePair.getMovieOneTitle(), 40, 40, mPaint);
             mPaint.setTextAlign(Paint.Align.RIGHT);
             canvas.drawText(mMoviePair.getMovieTwoTitle(), mWidth - 40, mHeight - 20, mPaint);
-            mPaint.setColor(0xFF00FF00);
         }
         else{
             canvas.drawText(mMoviePair.getMovieTwoTitle(), 40, 40, mPaint);
             mPaint.setTextAlign(Paint.Align.RIGHT);
             canvas.drawText(mMoviePair.getMovieOneTitle(), mWidth - 40, mHeight - 20, mPaint);
-            mPaint.setColor(0xFF00FFFF);
         }
 
         //color stolen from Twitter ;)

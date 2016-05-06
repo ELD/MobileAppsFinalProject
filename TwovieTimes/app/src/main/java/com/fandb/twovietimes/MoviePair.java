@@ -1,5 +1,6 @@
 package com.fandb.twovietimes;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ public class MoviePair {
     private Date mMovieOneStart;
     private Date mMovieOneEnd;
     private Date mMovieTwoStart;
+    private Date mMovieTwoEnd;
 
     public UUID getPairId() {
         return mPairId;
@@ -66,7 +68,7 @@ public class MoviePair {
         mMovieTwoStart = movieTwoStart;
     }
 
-    private Date mMovieTwoEnd;
+
 
     public MoviePair(Movie movieOne, Movie movieTwo, Integer durationOne, Integer durationTwo,
                      Date startOne, Date endOne, Date startTwo, Date endTwo) {
@@ -78,4 +80,32 @@ public class MoviePair {
         mMovieTwoStart = startTwo;
         mMovieTwoEnd = endTwo;
     }
+
+    public MoviePair(Movie movieOne, Movie movieTwo, Integer durationOne, Integer durationTwo,
+                     Date startOne, Date startTwo) {
+        mPairId = UUID.randomUUID();
+        mMovieOne = movieOne;
+        mMovieTwo = movieTwo;
+        mMovieOneStart = startOne;
+        mMovieTwoStart = startTwo;
+
+        Calendar m1end = Calendar.getInstance();
+        m1end.setTime(mMovieOneStart);
+        m1end.add(Calendar.MINUTE, getMovieOneDuration());
+        mMovieOneEnd = m1end.getTime();
+
+        Calendar m2end = Calendar.getInstance();
+        m2end.setTime(mMovieTwoStart);
+        m2end.add(Calendar.MINUTE, getMovieTwoDuration());
+        mMovieTwoEnd = m2end.getTime();
+    }
+
+    public boolean movieOneStartBeforeMovieTwo(){
+        return mMovieOneStart.before(mMovieTwoStart);
+    }
+
+    public boolean movieOneEndsBeforeMovieTwo(){
+        return mMovieOneEnd.before(mMovieTwoEnd);
+    }
+
 }
