@@ -78,6 +78,12 @@ public class APIHandler {
     //TheatreId -> Theater
     public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
+    public static ArrayList<MoviePair> getMoviePairsGenre(String mov1, String gen1){
+        ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
+
+        return mp;
+    }
+
     public static ArrayList<MoviePair> getMoviePairs(String mov1, String mov2){
         ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
 
@@ -106,8 +112,6 @@ public class APIHandler {
 
             }
         }
-
-        mp.
 
         return mp;
     }
