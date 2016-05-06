@@ -86,6 +86,10 @@ public class APIHandler {
         return m;
     }
 
+    public static ArrayList<MoviePair> getMoviePairsGenres(String gen1, String gen2){
+        return null;
+    }
+
     public static ArrayList<MoviePair> getMoviePairsGenre(String mov1, String gen1){
         ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
 
@@ -94,13 +98,28 @@ public class APIHandler {
         Iterator it = mMovieTimes.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry) it.next();
-            if((String)pair.getKey() != mTheatreId) continue;
+
+            if(!pair.getKey().equals(mTheatreId)) continue;
 
             ArrayList<MovieTime> m = (ArrayList<MovieTime>) pair.getValue();
 
             Log.d(TAG, String.valueOf(m));
             for(MovieTime mot : m){
-                if(mot.getTitle() != mov1 || !getGenresByMovieTime(mot).contains(gen1)) continue;
+                if(mot.getTitle() != mov1 && !getGenresByMovieTime(mot).contains(gen1)) continue;
+                else if(!mt.contains(mot)) mt.add(mot);
+            }
+        }
+
+        ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
+        for(MovieTime m : mt){
+            checked.add(m);
+            for(MovieTime a : mt){
+                if(checked.contains(a)) continue;
+                float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
+                float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
+                if(beg > mTimeTolerance || end > mTimeTolerance) continue;
+                else mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
+
             }
         }
 
@@ -122,8 +141,7 @@ public class APIHandler {
 
             for(MovieTime mot : m){
                 if(mot.getTitle() != mov1 && mot.getTitle() != mov2) continue;
-                Log.d(TAG, String.valueOf(mot));
-                if(!mt.contains(mot)) mt.add(mot);
+                else if(!mt.contains(mot)) mt.add(mot);
 
             }
         }
