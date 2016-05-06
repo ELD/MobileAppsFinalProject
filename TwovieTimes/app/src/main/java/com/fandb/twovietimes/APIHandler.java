@@ -78,6 +78,12 @@ public class APIHandler {
     //TheatreId -> Theater
     public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
+    public static ArrayList<MoviePair> getMoviePairsGenre(String mov1, String gen1){
+        ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
+
+        return mp;
+    }
+
     public static ArrayList<MoviePair> getMoviePairs(String mov1, String mov2){
         ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
 
@@ -87,10 +93,16 @@ public class APIHandler {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
 
-            MovieTime m = (MovieTime) pair.getValue();
+            if(pair.getKey() != mTheatreId) continue;
 
-            if(m.getTitle() != mov1 || m.getTitle() != mov2) continue;
-            else if(!mt.contains(m)) mt.add(m);
+            ArrayList<MovieTime> m = (ArrayList<MovieTime>) pair.getValue();
+
+            for(MovieTime mot : m){
+                if(mot.getTitle() != mov1 || mot.getTitle() != mov2) continue;
+                else if(!mt.contains(mot)) mt.add(mot);
+
+            }
+
 
         }
 
@@ -106,8 +118,6 @@ public class APIHandler {
 
             }
         }
-
-        mp.
 
         return mp;
     }
