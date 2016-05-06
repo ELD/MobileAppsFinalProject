@@ -18,7 +18,7 @@ public class MoviePair {
         return mPairId;
     }
 
-    public String getMovieOne() {
+    public String getMovieOneTitle() {
         return mMovieOne.getTitle();
     }
 
@@ -42,7 +42,7 @@ public class MoviePair {
         mMovieOneStart = movieOneStart;
     }
 
-    public String getMovieTwo() {
+    public String getMovieTwoTitle() {
         return mMovieTwo.getTitle();
     }
 

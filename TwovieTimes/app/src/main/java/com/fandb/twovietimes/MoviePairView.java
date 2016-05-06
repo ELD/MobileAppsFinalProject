@@ -3,7 +3,6 @@ package com.fandb.twovietimes;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 
 /**
@@ -40,15 +39,15 @@ public class MoviePairView extends View {
         mPaint.setTextAlign(Paint.Align.LEFT);
 
         if (mMoviePair.getMovieOneStart().before(mMoviePair.getMovieTwoStart())){
-            canvas.drawText(mMoviePair.getMovieOne(), 40, 40, mPaint);
+            canvas.drawText(mMoviePair.getMovieOneTitle(), 40, 40, mPaint);
             mPaint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(mMoviePair.getMovieTwo(), mWidth - 40, mHeight - 20, mPaint);
+            canvas.drawText(mMoviePair.getMovieTwoTitle(), mWidth - 40, mHeight - 20, mPaint);
             mPaint.setColor(0xFF00FF00);
         }
         else{
-            canvas.drawText(mMoviePair.getMovieTwo(), 40, 40, mPaint);
+            canvas.drawText(mMoviePair.getMovieTwoTitle(), 40, 40, mPaint);
             mPaint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(mMoviePair.getMovieOne(), mWidth - 40, mHeight - 20, mPaint);
+            canvas.drawText(mMoviePair.getMovieOneTitle(), mWidth - 40, mHeight - 20, mPaint);
             mPaint.setColor(0xFF00FFFF);
         }
 
