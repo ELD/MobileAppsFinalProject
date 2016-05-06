@@ -40,6 +40,10 @@ public class MoviePairList {
         return sMoviePairList;
     }
 
+    public void setMoviePairList(List<MoviePair> pairs) {
+        mMoviePairs = pairs;
+    }
+
     public MoviePair getPair(UUID id) {
         for (MoviePair pair : mMoviePairs) {
             if (pair.getPairId().equals(id)) {
