@@ -23,7 +23,9 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -104,7 +106,10 @@ public class TheaterFragment extends Fragment {
         mGetMoviesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Network update movie list
+                ArrayList<MoviePair> mp = null;
+                if(leftSelectedMovieOrGenre == null || rightSelectedMovieOrGenre == null)
+                    Toast.makeText(getActivity(), "Need to select two movies/genres first!", Toast.LENGTH_LONG).show();
+                if(leftSelectionIsMovie && rightSelectionIsMovie) mp = APIHandler.getMoviePairs(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre);
             }
         });
 

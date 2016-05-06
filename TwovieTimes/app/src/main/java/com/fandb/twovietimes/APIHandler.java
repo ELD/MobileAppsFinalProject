@@ -93,10 +93,16 @@ public class APIHandler {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
 
-            MovieTime m = (MovieTime) pair.getValue();
+            if(pair.getKey() != mTheatreId) continue;
 
-            if(m.getTitle() != mov1 || m.getTitle() != mov2) continue;
-            else if(!mt.contains(m)) mt.add(m);
+            ArrayList<MovieTime> m = (ArrayList<MovieTime>) pair.getValue();
+
+            for(MovieTime mot : m){
+                if(mot.getTitle() != mov1 || mot.getTitle() != mov2) continue;
+                else if(!mt.contains(mot)) mt.add(mot);
+
+            }
+
 
         }
 
