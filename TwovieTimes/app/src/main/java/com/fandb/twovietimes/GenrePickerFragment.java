@@ -118,7 +118,6 @@ public class GenrePickerFragment extends DialogFragment {
             if (currentSelected != null){
                 if (currentSelected.equals(position)){
                     mLayout.setBackgroundColor(0xFF00FF00);
-                    Log.d("HEY", "bindGenre: currentSelected: " + currentSelected + " my position:" + position);
                 }
                 else{
                     mLayout.setBackgroundColor(0xFFFFFFFF);
@@ -128,7 +127,6 @@ public class GenrePickerFragment extends DialogFragment {
 
         @Override
         public void onClick(View v) {
-            Log.d("STUFF", "onClick: CALLED position: " + getLayoutPosition());
             mGenreAdapter.setSelected(getLayoutPosition());
 
         }
