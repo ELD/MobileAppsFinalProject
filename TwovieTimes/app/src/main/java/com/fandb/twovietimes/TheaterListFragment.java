@@ -123,7 +123,7 @@ public class TheaterListFragment extends Fragment {
                 updateUI(load);
 
                 new API().execute(APIType.GetTheaters);
-                
+
                 updateUI(null);
             return true;
             default:
@@ -183,6 +183,7 @@ public class TheaterListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             if(mDisabled) return;
+            APIHandler.mTheatreId = mTheater.getAPIID();
             Intent intent = TheaterFragmentActivity.newIntent(getActivity(), mTheater.getId());
             startActivity(intent);
             //mCallbacks.onTheaterSelected(mTheater);

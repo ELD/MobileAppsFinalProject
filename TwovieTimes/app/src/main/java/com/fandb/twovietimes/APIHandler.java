@@ -78,8 +78,31 @@ public class APIHandler {
     //TheatreId -> Theater
     public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
+    public static ArrayList<String> getGenresByMovieTime(MovieTime mt){
+        ArrayList<String> m = new ArrayList<String>();
+
+
+
+        return m;
+    }
+
     public static ArrayList<MoviePair> getMoviePairsGenre(String mov1, String gen1){
         ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
+
+        ArrayList<MovieTime> mt = new ArrayList<MovieTime>();
+
+        Iterator it = mMovieTimes.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry) it.next();
+            if((String)pair.getKey() != mTheatreId) continue;
+
+            ArrayList<MovieTime> m = (ArrayList<MovieTime>) pair.getValue();
+
+            Log.d(TAG, String.valueOf(m));
+            for(MovieTime mot : m){
+                if(mot.getTitle() != mov1 || !getGenresByMovieTime(mot).contains(gen1)) continue;
+            }
+        }
 
         return mp;
     }
@@ -93,19 +116,17 @@ public class APIHandler {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
 
-            if(pair.getKey() != mTheatreId) continue;
+            if(!pair.getKey().equals(mTheatreId)) continue;
 
             ArrayList<MovieTime> m = (ArrayList<MovieTime>) pair.getValue();
 
             for(MovieTime mot : m){
-                if(mot.getTitle() != mov1 || mot.getTitle() != mov2) continue;
-                else if(!mt.contains(mot)) mt.add(mot);
+                if(mot.getTitle() != mov1 && mot.getTitle() != mov2) continue;
+                Log.d(TAG, String.valueOf(mot));
+                if(!mt.contains(mot)) mt.add(mot);
 
             }
-
-
         }
-
         ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
         for(MovieTime m : mt){
             checked.add(m);
