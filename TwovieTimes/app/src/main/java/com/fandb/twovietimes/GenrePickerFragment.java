@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,15 @@ public class GenrePickerFragment extends DialogFragment {
                 .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sendResult(Activity.RESULT_OK, mGenreAdapter.getSelectedGenre(), selectedMovies);
+                        if (mGenreAdapter == null){
+                            sendResult(Activity.RESULT_CANCELED, null, false);
+                        }
+                        else if(mGenreAdapter.getSelectedGenre() == null){
+                            sendResult(Activity.RESULT_CANCELED, null, false);
+                        }
+                        else{
+                            sendResult(Activity.RESULT_OK, mGenreAdapter.getSelectedGenre(), selectedMovies);
+                        }
                     }
                 })
                 .create();
