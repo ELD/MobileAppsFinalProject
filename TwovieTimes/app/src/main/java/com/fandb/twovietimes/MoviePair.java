@@ -8,10 +8,8 @@ import java.util.UUID;
  */
 public class MoviePair {
     private UUID mPairId;
-    private String mMovieOne;
-    private String mMovieTwo;
-    private Integer mMovieOneDuration;
-    private Integer mMovieTwoDuration;
+    private Movie mMovieOne;
+    private Movie mMovieTwo;
     private Date mMovieOneStart;
     private Date mMovieOneEnd;
     private Date mMovieTwoStart;
@@ -20,20 +18,12 @@ public class MoviePair {
         return mPairId;
     }
 
-    public String getMovieOne() {
-        return mMovieOne;
-    }
-
-    public void setMovieOne(String movieOne) {
-        mMovieOne = movieOne;
+    public String getMovieOneTitle() {
+        return mMovieOne.getTitle();
     }
 
     public Integer getMovieOneDuration() {
-        return mMovieOneDuration;
-    }
-
-    public void setMovieOneDuration(Integer movieOneDuration) {
-        mMovieOneDuration = movieOneDuration;
+        return Integer.getInteger(mMovieOne.getmDur());
     }
 
     public Date getMovieOneEnd() {
@@ -52,20 +42,12 @@ public class MoviePair {
         mMovieOneStart = movieOneStart;
     }
 
-    public String getMovieTwo() {
-        return mMovieTwo;
-    }
-
-    public void setMovieTwo(String movieTwo) {
-        mMovieTwo = movieTwo;
+    public String getMovieTwoTitle() {
+        return mMovieTwo.getTitle();
     }
 
     public Integer getMovieTwoDuration() {
-        return mMovieTwoDuration;
-    }
-
-    public void setMovieTwoDuration(Integer movieTwoDuration) {
-        mMovieTwoDuration = movieTwoDuration;
+        return Integer.getInteger(mMovieTwo.getmDur());
     }
 
     public Date getMovieTwoEnd() {
@@ -86,13 +68,11 @@ public class MoviePair {
 
     private Date mMovieTwoEnd;
 
-    public MoviePair(String movieOne, String movieTwo, Integer durationOne, Integer durationTwo,
+    public MoviePair(Movie movieOne, Movie movieTwo, Integer durationOne, Integer durationTwo,
                      Date startOne, Date endOne, Date startTwo, Date endTwo) {
         mPairId = UUID.randomUUID();
         mMovieOne = movieOne;
         mMovieTwo = movieTwo;
-        mMovieOneDuration = durationOne;
-        mMovieTwoDuration = durationTwo;
         mMovieOneStart = startOne;
         mMovieOneEnd = endOne;
         mMovieTwoStart = startTwo;
