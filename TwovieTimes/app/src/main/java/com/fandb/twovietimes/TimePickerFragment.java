@@ -48,6 +48,7 @@ public class TimePickerFragment extends DialogFragment {
 
         mDatePicker = (DatePicker) v.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);
+        mDatePicker.setMinDate(new Date().getTime());
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
