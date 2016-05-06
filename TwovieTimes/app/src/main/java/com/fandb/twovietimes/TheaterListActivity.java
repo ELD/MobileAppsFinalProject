@@ -1,6 +1,8 @@
 package com.fandb.twovietimes;
 
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
