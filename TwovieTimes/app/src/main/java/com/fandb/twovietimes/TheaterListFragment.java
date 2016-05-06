@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -115,9 +116,16 @@ public class TheaterListFragment extends Fragment {
                 // TODO: Launch settings activity?
                 return true;
             case R.id.loc_checkin:
-                // TODO: STEVE: Switch location, refresh data
-                Log.d(TAG, "onOptionsItemSelected: Switching Locations");
-                return true;
+                Toast.makeText(getActivity(), "Getting new location data...", Toast.LENGTH_LONG).show();
+                APIHandler.mInit = false;
+                ArrayList<Theater> load = new ArrayList<Theater>();
+                load.add(new Theater("Loading...", ""));
+                updateUI(load);
+
+                new API().execute(APIType.GetTheaters);
+                
+                updateUI(null);
+            return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

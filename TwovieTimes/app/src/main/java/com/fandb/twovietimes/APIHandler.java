@@ -382,7 +382,6 @@ public class APIHandler {
         Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
         Address address = new Address(Locale.getDefault());
         try {
-            Log.d(TAG, "hjkhjk");
             List<Address> addr = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             Log.d(TAG, String.valueOf(addr));
             if (addr.size() > 0) {
