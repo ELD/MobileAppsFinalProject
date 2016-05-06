@@ -15,6 +15,7 @@ public class MoviePair {
     private Date mMovieOneEnd;
     private Date mMovieTwoStart;
     private Date mMovieTwoEnd;
+    private long mDiff;
 
     public UUID getPairId() {
         return mPairId;
@@ -98,6 +99,8 @@ public class MoviePair {
         m2end.setTime(mMovieTwoStart);
         m2end.add(Calendar.MINUTE, getMovieTwoDuration());
         mMovieTwoEnd = m2end.getTime();
+
+        mDiff = Math.abs(startOne.getTime() - startTwo.getTime());
     }
 
     public boolean movieOneStartBeforeMovieTwo(){
