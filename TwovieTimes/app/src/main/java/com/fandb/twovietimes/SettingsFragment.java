@@ -3,6 +3,7 @@ package com.fandb.twovietimes;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,11 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 if(mRadius.getText().length() > 0){
                     APIHandler.mRadius = Integer.parseInt(mRadius.getText().toString());
+                    Log.d("api", String.valueOf(APIHandler.mRadius));
                 }
                 if(mZip.getText().length() == 5){
-                    APIHandler.mZip = mRadius.getText().toString();
+                    APIHandler.mZip = mZip.getText().toString();
+                    Log.d("api", (APIHandler.mZip));
                 }
             };
         });

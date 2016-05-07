@@ -422,7 +422,7 @@ public class APIHandler {
     private static String readFile() {
         String json = "";
         try {
-            BufferedReader inputFile = new BufferedReader(new InputStreamReader(mContext.openFileInput(getDate(mDate, true) + ".txt")));
+            BufferedReader inputFile = new BufferedReader(new InputStreamReader(mContext.openFileInput(getDate(mDate, true) + mZip + ".txt")));
 
             String line;
 
@@ -441,7 +441,7 @@ public class APIHandler {
     private static void writeFile(String output) {
         try {
             mContext.deleteFile(getDate(mDate, true) + ".txt");
-            FileOutputStream fos = mContext.openFileOutput(getDate(mDate, true) + ".txt", Context.MODE_PRIVATE);
+            FileOutputStream fos = mContext.openFileOutput(getDate(mDate, true) + mZip + ".txt", Context.MODE_PRIVATE);
             fos.write(output.getBytes());
             fos.close();
         } catch (Exception e) {
@@ -532,7 +532,7 @@ public class APIHandler {
         if(mDate == null) mDate = new Date();
 
         String json = "";
-        if(!mContext.getFileStreamPath(getDate(mDate, true) + ".txt").isFile()){
+        if(!mContext.getFileStreamPath(getDate(mDate, true) + mZip + ".txt").isFile()){
             Log.d(TAG, "No cache file found");
             json = getRequest(request, false).toString();
         }
