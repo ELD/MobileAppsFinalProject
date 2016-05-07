@@ -12,4 +12,6 @@
     <string name="settings_name">Settings</string>
     <string name="movie_matching_title">Matching</string>
     <string name="location">Change Location</string>
+    <string name="zip_code">Default Zip Code</string>
+    <string name="radius">Default Radius</string>
 </resources>

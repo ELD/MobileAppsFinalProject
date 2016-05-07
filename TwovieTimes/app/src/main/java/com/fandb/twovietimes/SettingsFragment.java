@@ -31,7 +31,9 @@ public class SettingsFragment extends Fragment {
         View v = inflater.inflate(R.layout.activity_settings, container, false);
 
         mRadius = (EditText) v.findViewById(R.id.radius);
+        mRadius.setText(Integer.toString(APIHandler.mRadius));
         mZip = (EditText) v.findViewById(R.id.zip);
+        mZip.setText(APIHandler.mZip);
 
         mApply = (Button) v.findViewById(R.id.apply);
         mApply.setOnClickListener(new View.OnClickListener() {
