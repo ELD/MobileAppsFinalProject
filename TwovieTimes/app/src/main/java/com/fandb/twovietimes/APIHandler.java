@@ -120,7 +120,7 @@ public class APIHandler {
         for(MovieTime m : mt){
             checked.add(m);
             for(MovieTime a : mt){
-                if(checked.contains(a)) continue;
+                if(m.getTitle().equals(a.getTitle()) || checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
                 //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
@@ -155,7 +155,7 @@ public class APIHandler {
         for(MovieTime m : mt){
             checked.add(m);
             for(MovieTime a : mt){
-                if(checked.contains(a)) continue;
+                if(m.getTitle().equals(a.getTitle()) || checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
                 //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
@@ -192,8 +192,7 @@ public class APIHandler {
         for(MovieTime m : mt){
             checked.add(m);
             for(MovieTime a : mt){
-                if(m.getTitle().equals(a.getTitle())) continue;
-                if(checked.contains(a)) continue;
+                if(m.getTitle().equals(a.getTitle()) || checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
                 Log.d(TAG, beg + ", " + end);
