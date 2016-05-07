@@ -115,7 +115,8 @@ public class TheaterListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_button:
-                // TODO: Launch settings activity?
+                Intent i = SettingsActivity.newIntent(getActivity());
+                startActivity(i);
                 return true;
             case R.id.loc_checkin:
                 Toast.makeText(getActivity(), "Getting new location data...", Toast.LENGTH_LONG).show();

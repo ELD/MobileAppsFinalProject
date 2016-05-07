@@ -205,6 +205,9 @@ public class TheaterFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.app_menu, menu);
+
+        MenuItem loc = (MenuItem) menu.findItem(R.id.loc_checkin);
+        loc.setVisible(false);
     }
 
     @Override

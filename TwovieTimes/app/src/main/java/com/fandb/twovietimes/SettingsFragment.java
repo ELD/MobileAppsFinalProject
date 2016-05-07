@@ -23,7 +23,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstance){
          super.onCreate(savedInstance);
-
     }
 
     @Override
