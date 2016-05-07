@@ -256,15 +256,12 @@ public class TheaterFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(TAG, "onActivityResult: HELLOOOO request code: " + requestCode);
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK){
-            Log.d(TAG, "onActivityResult: HELLOOOO BAD");
             return;
         } else if (requestCode == REQUEST_DATE){
             Date date = (Date) data.getSerializableExtra(TimePickerFragment.EXTRA_DATE);
             mMovieDate = date;
-            Log.d(TAG, "onActivityResult: " + mMovieDate);
         } else if (requestCode == REQUEST_GENRE_LEFT){
             String genre = data.getStringExtra(GenrePickerFragment.EXTRA_GENRE);
             boolean isMovie = data.getBooleanExtra(GenrePickerFragment.EXTRA_IS_MOVIE, false);
