@@ -97,6 +97,7 @@ public class APIHandler {
         return ret;
     }
 
+    //Gets movie pairs for two different genres, takes the name of two genres
     public static ArrayList<MoviePair> getMoviePairsGenres(String gen1, String gen2){
         ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
 
@@ -134,6 +135,7 @@ public class APIHandler {
         return mp;
     }
 
+    //Gwet movie pairs for a genre and a movie, takes the name of a movie and a genre
     public static ArrayList<MoviePair> getMoviePairsGenre(String mov1, String gen1){
         ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
 
@@ -171,6 +173,7 @@ public class APIHandler {
         return mp;
     }
 
+    //Get movie pairs for two different movies, takes the names of two movies
     public static ArrayList<MoviePair> getMoviePairs(String mov1, String mov2){
         ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
 
@@ -218,6 +221,7 @@ public class APIHandler {
         return mp;
     }
 
+    //Gets a movie object by a passed in MovieTime Object
     public static Movie getMovieByTime(MovieTime mt){
         Iterator it = mMovies.entrySet().iterator();
         while (it.hasNext()) {
@@ -235,6 +239,7 @@ public class APIHandler {
         return null;
     }
 
+    //Gets the address for a theatre by using the fandango link provided by the api
     public static String getAddress(String link, String theatre) throws IOException {
         if (mTheaters.containsKey(theatre)) {
             if (mTheaters.get(theatre).getAddress() != "") {
@@ -263,6 +268,7 @@ public class APIHandler {
         return "";
     }
 
+    //This gets the runtime of a movie parsed as an integer, takes a string formatted like PTXXHXXM
     public static Integer parseRunTime(String runtime) {
         if(runtime == null) return 0;
         runtime = runtime.replace("PT", "");
@@ -272,10 +278,12 @@ public class APIHandler {
         return Integer.parseInt(rt[0]) * 60 + Integer.parseInt(rt[1]);
     }
 
+    //Takes a runtime and returns the string value, uses parseRunTimee
     public static String parseRunTimeStr(String runtime){
         return String.valueOf(parseRunTime(runtime));
     }
 
+    //Gets the date object from the date string
     public static Date getStartDate(String date) {
         String[] pieces = date.split("T");
 
@@ -291,6 +299,7 @@ public class APIHandler {
         return null;
     }
 
+    //Gets the date object from the date string
     public static Date getEndDate(String date, int duration) {
         String[] pieces = date.split("T");
 
@@ -311,10 +320,12 @@ public class APIHandler {
         return null;
     }
 
+    //Get MovieTime object
     public static ArrayList<MovieTime> getMovieTimes() {
         return mMovieTimes.get(mTheatreId);
     }
 
+    //Gets a movie rating enum from a string
     private static MovieTime.Rating getRating(String rating) {
         MovieTime.Rating rat;
         switch (rating) {
@@ -338,6 +349,7 @@ public class APIHandler {
         return rat;
     }
 
+    //Populates the movietimes using the apimovietemplate object
     private static void populateMovieTimes(APIMovieTemplate[] mts) {
         for (APIMovieTemplate mt : mts) {
             String title = mt.title;
@@ -363,10 +375,12 @@ public class APIHandler {
         }
     }
 
+    //gets the movies object
     public static ArrayList<Movie> getMovies() {
         return new ArrayList<Movie>(mMovies.values());
     }
 
+    //Populates the movies object from the apitemplate
     private static void populateMovies(APIMovieTemplate[] mts) {
         for (APIMovieTemplate mt : mts) {
             MovieTime.Rating rat;
@@ -377,6 +391,7 @@ public class APIHandler {
         }
     }
 
+    //Gets the genres from all movies
     public static ArrayList<String> getGenres() {
         ArrayList<String> ret = new ArrayList<String>();
 
@@ -397,6 +412,7 @@ public class APIHandler {
         return ret;
     }
 
+    //Get all movies by a specific genre
     public static ArrayList<String> getMoviesByGenre(String genre) {
         ArrayList<String> ret = new ArrayList<String>();
 
@@ -416,6 +432,7 @@ public class APIHandler {
         return ret;
     }
 
+    //Gets all movie names
     public static ArrayList<String> getMovieNames() {
         ArrayList<String> ret = new ArrayList<String>();
 
@@ -431,6 +448,7 @@ public class APIHandler {
         return ret;
     }
 
+    //Gets a string from a date object
     private static String getDate(Date d, boolean output) {
         DateFormat df;
         if (output) df = new SimpleDateFormat("yyyyMMdd");
@@ -438,6 +456,7 @@ public class APIHandler {
         return df.format(d);
     }
 
+    //read teh cache file
     private static String readFile() {
         String json = "";
         try {
@@ -457,6 +476,7 @@ public class APIHandler {
         return json;
     }
 
+    //write to the cache file
     private static void writeFile(String output) {
         try {
             mContext.deleteFile(getDate(mDate, true) + ".txt");
@@ -467,6 +487,7 @@ public class APIHandler {
         }
     }
 
+    //Check if device is online
     public static boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -474,6 +495,7 @@ public class APIHandler {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    //Gets a zip code from location
     private static String getZipCodeFromLocation(Location location) {
         Address addr = getAddressFromLocation(location);
         if (addr.getPostalCode() == null) {
@@ -482,6 +504,7 @@ public class APIHandler {
         return addr.getPostalCode() == null ? "80401" : addr.getPostalCode();
     }
 
+    //Gets an address from location
     private static Address getAddressFromLocation(Location location) {
         Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
         Address address = new Address(Locale.getDefault());
@@ -497,6 +520,7 @@ public class APIHandler {
         }
         return address;
     }
+    //Gets a zip code from locaiton
     private static void getZipCode() {
 
         try {
@@ -540,6 +564,7 @@ public class APIHandler {
         }
     }
 
+    //Initalize the api handler
     public static void init(){
         if(mInit == true) return;
         if(mZip == null || mZip == "") getZipCode();
@@ -582,10 +607,12 @@ public class APIHandler {
         mInit = true;
     }
 
+    //Get theatre object
     public static ArrayList<Theater> getTheaters(){
         return new ArrayList<Theater>(mTheaters.values());
     }
 
+    //populate theatre object from apimovietemplate
     private static void populateTheatres(APIMovieTemplate[] mts){
         for(APIMovieTemplate mt : mts){
             for(APIMovieTemplate.showtimes s : mt.showtimes){
