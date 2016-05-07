@@ -92,15 +92,6 @@ public class MoviePairView extends View {
             canvas.drawText(mMoviePair.getMovieOneTitle() + ": " + mMoviePair.getMovieOneTimesString(), 0, mHeight - 20, mPaint);
         }
 
-        //color stolen from Twitter ;)
-        /*mPaint.setColor(0xFF469BEB);
-        canvas.drawCircle(100, (mHeight/2 - 50), 20, mPaint);
-        canvas.drawRect(100, (mHeight/2 - 50) - 5, mWidth - 250, (mHeight/2 - 50) + 5, mPaint);
-        canvas.drawCircle(mWidth - 250, (mHeight/2 - 50), 20, mPaint);
-
-        canvas.drawCircle(250, (mHeight/2 + 50), 20, mPaint);
-        canvas.drawRect(250, (mHeight/2 + 50) - 5, mWidth - 100, (mHeight/2 + 50) + 5, mPaint);
-        canvas.drawCircle(mWidth - 100, (mHeight/2 + 50), 20, mPaint);*/
 
         //color stolen from Twitter ;)
         mPaint.setColor(0xFF469BEB);

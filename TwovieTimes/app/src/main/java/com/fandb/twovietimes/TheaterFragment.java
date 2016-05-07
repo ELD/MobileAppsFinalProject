@@ -52,7 +52,6 @@ public class TheaterFragment extends Fragment {
 
     private Date mMovieDate;
 
-    //these probably won't be in the final design, but this is where these values are stored for now:
     private String leftSelectedMovieOrGenre;
     private boolean leftSelectionIsMovie;
     private String rightSelectedMovieOrGenre;

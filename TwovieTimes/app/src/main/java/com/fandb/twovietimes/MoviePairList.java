@@ -18,18 +18,6 @@ public class MoviePairList {
     private MoviePairList(Context context) {
         mContext = context.getApplicationContext();
         mMoviePairs = new ArrayList<>();
-        /*
-        Movie movie1 = new Movie()
-        mMoviePairs.add(
-                new MoviePair("Movie One", "Movie Two", 90, 105, new Date(2016, 04, 26, 5, 0), new Date(),
-                        new Date(2016, 04, 26, 5, 15), new Date())
-        );
-
-        mMoviePairs.add(
-                new MoviePair("Movie Three", "Movie Four", 90, 105, new Date(2016, 04, 26, 5, 25), new Date(),
-                        new Date(2016, 04, 26, 5, 15), new Date())
-        );
-        */
     }
 
     public static MoviePairList get(Context context) {
