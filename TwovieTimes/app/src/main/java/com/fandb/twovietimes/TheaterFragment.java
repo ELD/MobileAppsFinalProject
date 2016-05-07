@@ -114,10 +114,10 @@ public class TheaterFragment extends Fragment {
                     Toast.makeText(getActivity(), "Need to select two movies/genres first!", Toast.LENGTH_LONG).show();
                 else if(leftSelectedMovieOrGenre.equals(rightSelectedMovieOrGenre) && (leftSelectionIsMovie == true && rightSelectionIsMovie == true))
                     Toast.makeText(getActivity(), "Can\'t select two of the same movie", Toast.LENGTH_LONG).show();
-
-                else if(leftSelectionIsMovie && rightSelectionIsMovie)
+                else if(leftSelectionIsMovie && rightSelectionIsMovie) {
+                    Log.d(TAG, String.valueOf(APIHandler.getMoviePairs(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre)));
                     mMoviePairList.setMoviePairList(APIHandler.getMoviePairs(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre));
-
+                }
                 else if(!leftSelectionIsMovie && !rightSelectionIsMovie) {
                     mMoviePairList.setMoviePairList(APIHandler.getMoviePairsGenres(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre));
                 }

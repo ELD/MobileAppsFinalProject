@@ -80,19 +80,21 @@ public class APIHandler {
 
     public static String[] getGenresByMovieTime(MovieTime mt){
 
+        String[] ret = null;
+
         Iterator it = mMovies.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             Movie m = (Movie) pair.getValue();
 
-
+            Log.d(TAG, m.getTitle() + ", " + mt.getTitle());
             if(m.getTitle().equals(mt.getTitle())){
-                return m.getGenres();
+                ret = m.getGenres();
+                break;
             }
 
         }
-
-        return null;
+        return ret;
     }
 
     public static ArrayList<MoviePair> getMoviePairsGenres(String gen1, String gen2){
@@ -121,8 +123,8 @@ public class APIHandler {
                 if(checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
-                if(beg > mTimeTolerance || end > mTimeTolerance) continue;
-                else mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
+                //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
+                mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
 
             }
         }
@@ -156,8 +158,8 @@ public class APIHandler {
                 if(checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
-                if(beg > mTimeTolerance || end > mTimeTolerance) continue;
-                else mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
+                //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
+                mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
 
             }
         }
@@ -180,10 +182,12 @@ public class APIHandler {
 
             for(MovieTime mot : m){
                 if(mot.getTitle() != mov1 && mot.getTitle() != mov2) continue;
-                else if(!mt.contains(mot)) mt.add(mot);
+                if(!mt.contains(mot)) mt.add(mot);
 
             }
         }
+
+
         ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
         for(MovieTime m : mt){
             checked.add(m);
@@ -191,17 +195,20 @@ public class APIHandler {
                 if(checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
-                if(beg > mTimeTolerance || end > mTimeTolerance) continue;
-                else mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
+                Log.d(TAG, beg + ", " + end);
+                //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
+                mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
 
             }
         }
+
+        Log.d(TAG, String.valueOf(mp));
 
         return mp;
     }
 
     public static Movie getMovieByTime(MovieTime mt){
-        Iterator it = mMovieTimes.entrySet().iterator();
+        Iterator it = mMovies.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
 
