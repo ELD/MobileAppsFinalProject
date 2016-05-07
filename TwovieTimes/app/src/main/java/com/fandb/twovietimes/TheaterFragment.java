@@ -64,6 +64,8 @@ public class TheaterFragment extends Fragment {
     private String rightSelectedMovieOrGenre;
     private boolean rightSelectionIsMovie;
 
+    private MoviePairList mMoviePairList;
+
     public static TheaterFragment newInstance(UUID theaterId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_THEATER_ID, theaterId);
@@ -79,6 +81,8 @@ public class TheaterFragment extends Fragment {
         mTheater = TheaterList.get(getActivity()).getTheater(theaterId);
 
         mMovieDate = new Date();
+
+        mMoviePairList = MoviePairList.get(getActivity());
 
         setHasOptionsMenu(true);
     }
@@ -106,29 +110,27 @@ public class TheaterFragment extends Fragment {
         mGetMoviesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<MoviePair> mp = null;
                 if(leftSelectedMovieOrGenre == null || rightSelectedMovieOrGenre == null)
                     Toast.makeText(getActivity(), "Need to select two movies/genres first!", Toast.LENGTH_LONG).show();
                 if(leftSelectedMovieOrGenre.equals(rightSelectedMovieOrGenre) && (leftSelectionIsMovie == true && rightSelectionIsMovie == true))
                     Toast.makeText(getActivity(), "Can\'t select two of the same movie", Toast.LENGTH_LONG).show();
                 if(leftSelectionIsMovie && rightSelectionIsMovie)
-                    mp = APIHandler.getMoviePairs(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre);
+                    mMoviePairList.setMoviePairList(APIHandler.getMoviePairs(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre));
                 else if(!leftSelectionIsMovie && !rightSelectionIsMovie)
-                    mp = APIHandler.getMoviePairsGenres(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre);
-                else{
+                    mMoviePairList.setMoviePairList(APIHandler.getMoviePairsGenres(leftSelectedMovieOrGenre, rightSelectedMovieOrGenre));
+                else {
                     String mov = "";
                     String gen = "";
-                    if(leftSelectionIsMovie){
+                    if (leftSelectionIsMovie) {
                         mov = leftSelectedMovieOrGenre;
                         gen = rightSelectedMovieOrGenre;
-                    }
-                    else{
+                    } else {
                         mov = rightSelectedMovieOrGenre;
                         gen = leftSelectedMovieOrGenre;
                     }
-                    mp = APIHandler.getMoviePairsGenre(mov, gen);
-
+                    mMoviePairList.setMoviePairList(APIHandler.getMoviePairsGenre(mov, gen));
                 }
+                updateUI();
             }
         });
 
@@ -163,37 +165,27 @@ public class TheaterFragment extends Fragment {
             }
         });
 
-        // TODO: Populate movie lists
-        // TODO: Make DatePicker
-
         updateUI();
 
         return v;
     }
 
     public void updateUI() {
-        MoviePairList moviePairList = MoviePairList.get(getActivity());
-        List<MoviePair> moviePairs = moviePairList.getMoviePairs();
-
         if (mMovieAdapter == null) {
-            //mMovieAdapter = new MovieAdapter(moviePairs);
-            mMovieAdapter = new MoviePairAdapter(moviePairs);
+            mMovieAdapter = new MoviePairAdapter(mMoviePairList.getMoviePairs());
             mMovieRecylcerView.setAdapter(mMovieAdapter);
         } else {
+            mMovieAdapter.setMovies(mMoviePairList.getMoviePairs());
             mMovieAdapter.notifyDataSetChanged();
         }
     }
 
     private class MoviePairHolder extends RecyclerView.ViewHolder {
-        //private MoviePair mMoviePair;
         private View mMoviePairView;
 
         public MoviePairHolder(View itemView) {
             super(itemView);
             mMoviePairView = itemView;
-            //mMoviePairView = new MoviePairView(itemView.getContext(), mMoviePair, itemView.getWidth(), itemView.getHeight());
-
-            //itemView.view
         }
         public void bindMoviePair(MoviePair pair) {
             FrameLayout holder = (FrameLayout) itemView.findViewById(R.id.holder);
@@ -251,6 +243,10 @@ public class TheaterFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mMoviePairs.size();
+        }
+
+        public void setMovies(List<MoviePair> movies) {
+            mMoviePairs = movies;
         }
     }
 
