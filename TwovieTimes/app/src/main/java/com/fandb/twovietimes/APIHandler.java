@@ -78,16 +78,56 @@ public class APIHandler {
     //TheatreId -> Theater
     public static HashMap<String, Theater> mTheaters = new HashMap<String, Theater>();
 
-    public static ArrayList<String> getGenresByMovieTime(MovieTime mt){
-        ArrayList<String> m = new ArrayList<String>();
+    public static String[] getGenresByMovieTime(MovieTime mt){
+
+        Iterator it = mMovies.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Movie m = (Movie) pair.getValue();
 
 
+            if(m.getTitle().equals(mt.getTitle())){
+                return m.getGenres();
+            }
 
-        return m;
+        }
+
+        return null;
     }
 
     public static ArrayList<MoviePair> getMoviePairsGenres(String gen1, String gen2){
-        return null;
+        ArrayList<MoviePair> mp = new ArrayList<MoviePair>();
+
+        ArrayList<MovieTime> mt = new ArrayList<MovieTime>();
+
+        Iterator it = mMovieTimes.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry) it.next();
+
+            if(!pair.getKey().equals(mTheatreId)) continue;
+
+            ArrayList<MovieTime> m = (ArrayList<MovieTime>) pair.getValue();
+            for(MovieTime mot : m){
+                ArrayList<String> st = new ArrayList(Arrays.asList(getGenresByMovieTime(mot)));
+                if(!st.contains(gen2) && !st.contains(gen1)) continue;
+                if(!mt.contains(mot)) mt.add(mot);
+            }
+        }
+
+        ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
+        for(MovieTime m : mt){
+            checked.add(m);
+            for(MovieTime a : mt){
+                if(checked.contains(a)) continue;
+                float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
+                float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
+                if(beg > mTimeTolerance || end > mTimeTolerance) continue;
+                else mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
+
+            }
+        }
+
+        return mp;
     }
 
     public static ArrayList<MoviePair> getMoviePairsGenre(String mov1, String gen1){
@@ -102,11 +142,10 @@ public class APIHandler {
             if(!pair.getKey().equals(mTheatreId)) continue;
 
             ArrayList<MovieTime> m = (ArrayList<MovieTime>) pair.getValue();
-
-            Log.d(TAG, String.valueOf(m));
             for(MovieTime mot : m){
-                if(mot.getTitle() != mov1 && !getGenresByMovieTime(mot).contains(gen1)) continue;
-                else if(!mt.contains(mot)) mt.add(mot);
+                ArrayList<String> st = new ArrayList(Arrays.asList(getGenresByMovieTime(mot)));
+                if(mot.getTitle() != mov1 && !st.contains(gen1)) continue;
+                if(!mt.contains(mot)) mt.add(mot);
             }
         }
 
