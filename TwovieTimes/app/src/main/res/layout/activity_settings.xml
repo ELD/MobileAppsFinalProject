@@ -16,7 +16,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/zip"
-        android:text="Zip"
+        android:hint="@string/zip_code"
         android:layout_marginTop="95dp"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true" />
@@ -37,10 +37,9 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/radius"
-        android:layout_below="@+id/editText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="97dp"
-        android:text="Radius" />
+        android:hint="@string/radius" />
 
     <Button
         android:layout_width="wrap_content"
@@ -49,5 +48,5 @@
         android:id="@+id/apply"
         android:layout_below="@+id/zip"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="95dp" />
+        android:layout_marginTop="60dp" />
 </RelativeLayout>
