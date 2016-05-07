@@ -34,7 +34,7 @@ public class MoviePairView extends View {
         super.onDraw(canvas);
         mHeight = canvas.getHeight();
         mPaint.setColor(0xFFFFFFFF);
-        canvas.drawRect(0,0,mWidth, mHeight, mPaint);
+        canvas.drawRect(0,0,mWidth, mHeight - 5, mPaint);
 
 
         if (mMoviePair.movieOneStartBeforeMovieTwo() && !mMoviePair.movieOneEndsBeforeMovieTwo()

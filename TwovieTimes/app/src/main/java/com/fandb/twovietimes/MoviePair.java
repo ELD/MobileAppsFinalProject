@@ -1,12 +1,9 @@
 package com.fandb.twovietimes;
 
-import android.util.Log;
-
 import android.text.format.DateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.PriorityQueue;
 import java.util.UUID;
 
 /**
@@ -31,7 +28,7 @@ public class MoviePair {
     }
 
     public Integer getMovieOneDuration() {
-        return Integer.getInteger(mMovieOne.getmDur());
+        return Integer.parseInt(mMovieOne.getmDur());
     }
 
     public Date getMovieOneEnd() {
@@ -55,7 +52,7 @@ public class MoviePair {
     }
 
     public Integer getMovieTwoDuration() {
-        return Integer.getInteger(mMovieTwo.getmDur());
+        return Integer.parseInt(mMovieTwo.getmDur());
     }
 
     public Date getMovieTwoEnd() {
