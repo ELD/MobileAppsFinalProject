@@ -188,6 +188,7 @@ public class APIHandler {
         }
 
 
+
         ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
         for(MovieTime m : mt){
             checked.add(m);
@@ -195,14 +196,19 @@ public class APIHandler {
                 if(m.getTitle().equals(a.getTitle()) || checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
-                Log.d(TAG, beg + ", " + end);
                 //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
-                mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
+                MoviePair temp = new MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime());
+                if(mp.contains(temp)){
+                    continue;
+                }
+                mp.add(temp);
                 checked.add(a);
             }
         }
 
-        Log.d(TAG, String.valueOf(mp));
+        //Log.d(TAG, String.valueOf(checked));
+
+        //Log.d(TAG, String.valueOf(mp));
 
         return mp;
     }
@@ -216,7 +222,7 @@ public class APIHandler {
             Movie mo = (Movie) pair.getValue();
 
             if(mo.getTitle() == mt.getTitle()){
-                Log.d(TAG, String.valueOf(mo));
+                //Log.d(TAG, String.valueOf(mo));
                 return mo;
             }
 
