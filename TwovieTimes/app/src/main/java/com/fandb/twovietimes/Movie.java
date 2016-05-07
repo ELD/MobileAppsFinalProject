@@ -2,6 +2,7 @@ package com.fandb.twovietimes;
 
 /**
  * Created by Steve on 4/24/2016.
+ * Holds all info for a movie
  */
 public class Movie{
     private String mTitle;

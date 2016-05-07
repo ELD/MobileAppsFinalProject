@@ -7,6 +7,7 @@ import android.view.View;
 
 /**
  * Created by Alex on 4/26/16.
+ * 2D graphics for diplaying movie pairs
  */
 public class MoviePairView extends View {
     private MoviePair mMoviePair;

@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.text.NumberFormat;
-
 /**
  * Created by eric on 5/6/16.
+ * fragment for the settings activity
  */
 public class SettingsFragment extends Fragment {
     EditText mRadius;

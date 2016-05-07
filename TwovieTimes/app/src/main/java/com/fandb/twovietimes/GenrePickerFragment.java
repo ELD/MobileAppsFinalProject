@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * Created by Alex on 5/2/16.
+ * Fragment for the genre/movie picker dialog
  */
 public class GenrePickerFragment extends DialogFragment {
 

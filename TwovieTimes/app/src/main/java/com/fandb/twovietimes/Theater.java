@@ -5,6 +5,7 @@ import java.util.UUID;
 
 /**
  * Created by Alex on 4/6/16.
+ * Theater object to hold all info for a theater
  */
 public class Theater {
     private UUID mId;

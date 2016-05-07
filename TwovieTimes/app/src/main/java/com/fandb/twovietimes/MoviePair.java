@@ -8,6 +8,7 @@ import java.util.UUID;
 
 /**
  * Created by eric on 4/10/16.
+ * holds all info for a pair of movies
  */
 public class MoviePair {
     private UUID mPairId;
