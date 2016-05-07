@@ -199,7 +199,6 @@ public class APIHandler {
                 //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
                 MoviePair temp = new MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime());
                 if(mp.contains(temp)){
-                    Log.d(TAG, "Already contains");
                     continue;
                 }
                 mp.add(temp);

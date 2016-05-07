@@ -2,6 +2,8 @@ package com.fandb.twovietimes;
 
 import android.util.Log;
 
+import android.text.format.DateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.PriorityQueue;
@@ -85,14 +87,23 @@ public class MoviePair {
         mMovieTwoEnd = endTwo;
     }
 
-    public boolean equals(MoviePair mp){
+    @Override
+    public boolean equals(Object mp){
+        MoviePair a = (MoviePair)mp;
         boolean ret = false;
-        Log.d("api", "Comparing");
-        if(mMovieOne.getTitle() == mp.getMovieOneTitle() && mMovieTwo.getTitle() == mp.getMovieTwoTitle()) ret = true;
+        if(mMovieOne.getTitle() == a.getMovieOneTitle() && mMovieTwo.getTitle() == a.getMovieTwoTitle()) ret = true;
 
         return ret;
 
     }
+
+    @Override
+    public int hashCode(){
+        int hash = 3;
+        hash = 53 * hash + (mMovieOne.getTitle().hashCode() + mMovieTwo.getTitle().hashCode());
+        return hash;
+    }
+
     public MoviePair(Movie movieOne, Movie movieTwo, Integer durationOne, Integer durationTwo,
                      Date startOne, Date startTwo) {
         mPairId = UUID.randomUUID();
@@ -120,6 +131,38 @@ public class MoviePair {
 
     public boolean movieOneEndsBeforeMovieTwo(){
         return mMovieOneEnd.before(mMovieTwoEnd);
+    }
+
+    public String getMovieOneStartString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieOneStart).toString();
+    }
+
+    public String getMovieOneEndString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieOneEnd).toString();
+    }
+
+    public String getMovieTwoStartString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieTwoStart).toString();
+    }
+
+    public String getMovieTwoEndString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieTwoEnd).toString();
+    }
+
+    public String getMovieOneTimesString(){
+        return getMovieOneStartString() + " - " + getMovieOneEndString();
+    }
+
+    public String getMovieTwoTimesString(){
+        return getMovieTwoStartString() + " - " + getMovieTwoEndString();
     }
 
 }
