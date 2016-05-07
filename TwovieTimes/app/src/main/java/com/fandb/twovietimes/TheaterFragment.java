@@ -214,7 +214,8 @@ public class TheaterFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings_button:
-                // TODO: Launch settings activity?
+                Intent i = SettingsActivity.newIntent(getActivity());
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
