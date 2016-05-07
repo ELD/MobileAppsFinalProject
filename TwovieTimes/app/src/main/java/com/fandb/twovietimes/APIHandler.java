@@ -272,6 +272,10 @@ public class APIHandler {
         return Integer.parseInt(rt[0]) * 60 + Integer.parseInt(rt[1]);
     }
 
+    public static String parseRunTimeStr(String runtime){
+        return String.valueOf(parseRunTime(runtime));
+    }
+
     public static Date getStartDate(String date) {
         String[] pieces = date.split("T");
 

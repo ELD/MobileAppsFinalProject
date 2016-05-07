@@ -23,7 +23,7 @@ public class Movie{
         this.mShortDescrip = mShortDescrip;
         this.mDirectors = mDirectors;
         this.mURL = mURL;
-        this.mDur = mDur;
+        this.mDur = APIHandler.parseRunTimeStr(mDur);
         this.mRat = mRat;
     }
 

@@ -28,6 +28,7 @@ public class MoviePair {
     }
 
     public Integer getMovieOneDuration() {
+
         return Integer.parseInt(mMovieOne.getmDur());
     }
 
