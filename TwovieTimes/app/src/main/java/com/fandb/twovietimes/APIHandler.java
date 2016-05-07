@@ -118,7 +118,6 @@ public class APIHandler {
 
         ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
         for(MovieTime m : mt){
-            checked.add(m);
             for(MovieTime a : mt){
                 if(m.getTitle().equals(a.getTitle()) || checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
@@ -156,7 +155,6 @@ public class APIHandler {
 
         ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
         for(MovieTime m : mt){
-            checked.add(m);
             for(MovieTime a : mt){
                 if(m.getTitle().equals(a.getTitle()) || checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
@@ -178,6 +176,8 @@ public class APIHandler {
 
         ArrayList<MovieTime> mt = new ArrayList<MovieTime>();
 
+        Log.d(TAG, "Member: " + String.valueOf(mMovieTimes.size()));
+
         Iterator it = mMovieTimes.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
@@ -193,11 +193,11 @@ public class APIHandler {
             }
         }
 
+        Log.d(TAG, String.valueOf(mt.size()));
 
 
         ArrayList<MovieTime> checked = new ArrayList<MovieTime>();
         for(MovieTime m : mt){
-            checked.add(m);
             for(MovieTime a : mt){
                 if(m.getTitle().equals(a.getTitle()) || checked.contains(a)) continue;
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
@@ -208,7 +208,6 @@ public class APIHandler {
                     continue;
                 }
                 mp.add(temp);
-                checked.add(a);
             }
         }
 
@@ -265,6 +264,7 @@ public class APIHandler {
     }
 
     public static Integer parseRunTime(String runtime) {
+        if(runtime == null) return 0;
         runtime = runtime.replace("PT", "");
         runtime = runtime.replace("M", "");
         String[] rt = runtime.split("H");
@@ -551,7 +551,8 @@ public class APIHandler {
         if(mDate == null) mDate = new Date();
 
         String json = "";
-        if(!mContext.getFileStreamPath(getDate(mDate, true) + mZip + ".txt").isFile()){
+        //if(!mContext.getFileStreamPath(getDate(mDate, true) + mZip + ".txt").isFile()){
+        if(true){
             Log.d(TAG, "No cache file found");
             json = getRequest(request, false).toString();
         }
