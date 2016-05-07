@@ -1,5 +1,8 @@
 package com.fandb.twovietimes;
 
+
+import android.text.format.DateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -109,6 +112,38 @@ public class MoviePair {
 
     public boolean movieOneEndsBeforeMovieTwo(){
         return mMovieOneEnd.before(mMovieTwoEnd);
+    }
+
+    public String getMovieOneStartString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieOneStart).toString();
+    }
+
+    public String getMovieOneEndString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieOneEnd).toString();
+    }
+
+    public String getMovieTwoStartString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieTwoStart).toString();
+    }
+
+    public String getMovieTwoEndString(){
+        String timeFormat = "HH:mm";
+        Calendar time = Calendar.getInstance();
+        return DateFormat.format(timeFormat, mMovieTwoEnd).toString();
+    }
+
+    public String getMovieOneTimesString(){
+        return getMovieOneStartString() + " - " + getMovieOneEndString();
+    }
+
+    public String getMovieTwoTimesString(){
+        return getMovieTwoStartString() + " - " + getMovieTwoEndString();
     }
 
 }

@@ -46,14 +46,14 @@ public class MoviePairView extends View {
         mPaint.setTextAlign(Paint.Align.LEFT);
 
         if (mMoviePair.getMovieOneStart().before(mMoviePair.getMovieTwoStart())){
-            canvas.drawText(mMoviePair.getMovieOneTitle(), 40, 40, mPaint);
+            canvas.drawText(mMoviePair.getMovieOneTitle() + ": " + mMoviePair.getMovieOneTimesString(), 40, 40, mPaint);
             mPaint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(mMoviePair.getMovieTwoTitle(), mWidth - 40, mHeight - 20, mPaint);
+            canvas.drawText(mMoviePair.getMovieTwoTitle() + ": " + mMoviePair.getMovieTwoTimesString(), mWidth - 40, mHeight - 20, mPaint);
         }
         else{
-            canvas.drawText(mMoviePair.getMovieTwoTitle(), 40, 40, mPaint);
+            canvas.drawText(mMoviePair.getMovieTwoTitle() + ": " + mMoviePair.getMovieTwoTimesString(), 40, 40, mPaint);
             mPaint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(mMoviePair.getMovieOneTitle(), mWidth - 40, mHeight - 20, mPaint);
+            canvas.drawText(mMoviePair.getMovieOneTitle() + ": " + mMoviePair.getMovieOneTimesString(), mWidth - 40, mHeight - 20, mPaint);
         }
 
         //color stolen from Twitter ;)
