@@ -44,6 +44,8 @@ public class MoviePairList {
         mMoviePairs = pairs;
     }
 
+    public int getMoviePairListLength(){ return mMoviePairs.size(); }
+
     public MoviePair getPair(UUID id) {
         for (MoviePair pair : mMoviePairs) {
             if (pair.getPairId().equals(id)) {

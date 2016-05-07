@@ -134,6 +134,9 @@ public class TheaterFragment extends Fragment {
                     }
                     mMoviePairList.setMoviePairList(APIHandler.getMoviePairsGenre(mov, gen));
                 }
+                if(mMoviePairList.getMoviePairListLength() < 1){
+                    Toast.makeText(getActivity(), "No movies with the selected criteria", Toast.LENGTH_LONG).show();
+                }
                 updateUI();
             }
         });
