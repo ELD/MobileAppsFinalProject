@@ -1,7 +1,10 @@
 package com.fandb.twovietimes;
 
+import android.util.Log;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.PriorityQueue;
 import java.util.UUID;
 
 /**
@@ -82,6 +85,14 @@ public class MoviePair {
         mMovieTwoEnd = endTwo;
     }
 
+    public boolean equals(MoviePair mp){
+        boolean ret = false;
+        Log.d("api", "Comparing");
+        if(mMovieOne.getTitle() == mp.getMovieOneTitle() && mMovieTwo.getTitle() == mp.getMovieTwoTitle()) ret = true;
+
+        return ret;
+
+    }
     public MoviePair(Movie movieOne, Movie movieTwo, Integer durationOne, Integer durationTwo,
                      Date startOne, Date startTwo) {
         mPairId = UUID.randomUUID();
