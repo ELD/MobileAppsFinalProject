@@ -5,11 +5,11 @@ import java.util.UUID;
 
 /**
  * Created by Alex on 4/6/16.
+ * Theater object to hold all info for a theater
  */
 public class Theater {
     private UUID mId;
     private String mName;
-    //this probably won't end up being a string, but I'll make it one for now
     private String mDistance;
     private String mAddress;
     private String mAPIId;

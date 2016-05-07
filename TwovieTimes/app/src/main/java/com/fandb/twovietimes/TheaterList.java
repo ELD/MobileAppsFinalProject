@@ -1,12 +1,6 @@
 package com.fandb.twovietimes;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +8,7 @@ import java.util.UUID;
 
 /**
  * Created by Alex on 4/6/16.
+ * Holds a list of theaters
  */
 public class TheaterList {
 

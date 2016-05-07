@@ -26,6 +26,7 @@ import java.util.UUID;
 
 /**
  * Created by eric on 5/5/16.
+ * Fragment for the theater, which shows all the movie overlaps
  */
 public class TheaterFragment extends Fragment {
     public static String ARG_THEATER_ID = "theater_id";
@@ -51,7 +52,6 @@ public class TheaterFragment extends Fragment {
 
     private Date mMovieDate;
 
-    //these probably won't be in the final design, but this is where these values are stored for now:
     private String leftSelectedMovieOrGenre;
     private boolean leftSelectionIsMovie;
     private String rightSelectedMovieOrGenre;
@@ -180,6 +180,7 @@ public class TheaterFragment extends Fragment {
         }
     }
 
+    //holder for the movie pairs
     private class MoviePairHolder extends RecyclerView.ViewHolder {
         private View mMoviePairView;
 
