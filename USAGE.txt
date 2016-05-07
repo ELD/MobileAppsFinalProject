@@ -1,0 +1,14 @@
+For this release, we cleaned up some of the UI and improved the functionality
+of the app. The network component is complete and it can now use the user's
+location to retrieve a list of theaters. You can also change the fallback
+zip code and expand the search radius for movie theaters.
+
+Usage Instructions:
+Launch the app and wait for the theater listing to load. From there, select
+a theater from the list. Once on the next page, select "now" or the future
+date for the movie(s) you want to watch. Select a movie title and a movie
+genre from the two pickers and hit "Get Movie Times" button. Some movies
+may or may not appear in the correct genre for various reasons. This is
+typically due to an API issue. We couldn't normalize the data in such a
+way that accounted for such issues, unfortunately.
+
