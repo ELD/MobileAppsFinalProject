@@ -69,6 +69,8 @@ public class TheaterListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        new API().execute(APIType.GetTheaters);
+
         updateUI(null);
     }
 
