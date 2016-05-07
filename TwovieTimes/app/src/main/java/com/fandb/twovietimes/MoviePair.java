@@ -132,25 +132,25 @@ public class MoviePair {
     }
 
     public String getMovieOneStartString(){
-        String timeFormat = "KK:mm";
+        String timeFormat = "hh:mm";
         Calendar time = Calendar.getInstance();
         return DateFormat.format(timeFormat, mMovieOneStart).toString();
     }
 
     public String getMovieOneEndString(){
-        String timeFormat = "KK:mm";
+        String timeFormat = "hh:mm";
         Calendar time = Calendar.getInstance();
         return DateFormat.format(timeFormat, mMovieOneEnd).toString();
     }
 
     public String getMovieTwoStartString(){
-        String timeFormat = "KK:mm";
+        String timeFormat = "hh:mm";
         Calendar time = Calendar.getInstance();
         return DateFormat.format(timeFormat, mMovieTwoStart).toString();
     }
 
     public String getMovieTwoEndString(){
-        String timeFormat = "KK:mm";
+        String timeFormat = "hh:mm";
         Calendar time = Calendar.getInstance();
         return DateFormat.format(timeFormat, mMovieTwoEnd).toString();
     }
