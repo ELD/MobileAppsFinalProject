@@ -23,7 +23,7 @@ public class MovieTime {
         return mEndTime;
     }
 
-    public Integer getmDuration() {
+    public int getmDuration() {
         return mDuration;
     }
 
@@ -39,7 +39,7 @@ public class MovieTime {
     private Date mStartTime;
     private Date mEndTime;
     //duration in minutes (rounded)
-    private Integer mDuration;
+    private int mDuration;
 
     public enum Rating {
         G, PG, PG13, R, NC17

@@ -124,8 +124,11 @@ public class APIHandler {
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
                 //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
-                mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
-
+                MoviePair temp = new MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime());
+                if(mp.contains(temp)){
+                    continue;
+                }
+                mp.add(temp);
             }
         }
 
@@ -159,8 +162,11 @@ public class APIHandler {
                 float beg = Math.abs(a.getStartTime().getTime() - m.getStartTime().getTime());
                 float end = Math.abs(a.getEndTime().getTime() - m.getEndTime().getTime());
                 //if(beg > mTimeTolerance || end > mTimeTolerance) continue;
-                mp.add(new  MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime()));
-
+                MoviePair temp = new MoviePair(getMovieByTime(m), getMovieByTime(a), m.getmDuration(), a.getmDuration(), m.getStartTime(), a.getStartTime());
+                if(mp.contains(temp)){
+                    continue;
+                }
+                mp.add(temp);
             }
         }
 

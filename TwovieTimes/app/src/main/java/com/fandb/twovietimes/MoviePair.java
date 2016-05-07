@@ -114,12 +114,12 @@ public class MoviePair {
 
         Calendar m1end = Calendar.getInstance();
         m1end.setTime(mMovieOneStart);
-        //.add(Calendar.MINUTE, getMovieOneDuration());
+        m1end.add(Calendar.MINUTE, getMovieOneDuration());
         mMovieOneEnd = m1end.getTime();
 
         Calendar m2end = Calendar.getInstance();
         m2end.setTime(mMovieTwoStart);
-        //m2end.add(Calendar.MINUTE, getMovieTwoDuration());
+        m2end.add(Calendar.MINUTE, getMovieTwoDuration());
         mMovieTwoEnd = m2end.getTime();
 
         mDiff = Math.abs(startOne.getTime() - startTwo.getTime());
