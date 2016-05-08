@@ -9,28 +9,54 @@
 	
 </head>
 
-<nav>
-	<div class="nav-wrapper blue">
-		<a href="#" class="brand-logo center">Twovie Time</a>
-	</div>
-</nav>
-<div class="row">
+<div class="navbar-fixed">
+	<nav>
+		<div class="nav-wrapper blue">
+			<a href="#" class="brand-logo center">Twovie Times</a>
+			<ul class="left hide-on-med-and-down">
+				<li><a href="#Pictures">Pictures</a></li>
+				<li><a href="#About">About</a></li>
+				<li><a href="#Download">Download</a></li>
+				<li><a href="#developers">Developers</a></li>
+				<li><a href="#source">Source Code</a></li>
+			</ul>
+		</div>
+	</nav>
+</div>
+
+<div class="row" id="Pictures">
 	<div class="col s6 offset-s3">
 		<div class="card-panel hoverable grey lighten-4">
 			<div class="slider">
 			    <ul class="slides">
 			        <li>
-			            <img src="http://lorempixel.com/580/250/nature/1">
-			            <div class="caption center-align">
-			                <h3>This is our big Tagline!</h3>
-			                <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+			            <img src="imgs/theater-select-test.png">
+			            <div class="caption left-align">
+			                <h5 class="black-text">Theater Selection</h5>
+			            </div> 
+			        </li>
+			        <li>
+			            <img src="imgs/movies-select.png">
+			            <div class="caption left-align">
+			                <h5 class="black-text">Movie Selection</h5>
 			            </div>
 			        </li>
 			        <li>
-			            <img src="http://lorempixel.com/580/250/nature/2">
+			            <img src="imgs/genres-select.png">
 			            <div class="caption left-align">
-			                <h3>Left Aligned Caption</h3>
-			                <h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+			                <h5 class="black-text">Genre Selection</h5>
+			            </div>
+			        </li>
+			        <li>
+			            <img src="imgs/results.png">
+			            <div class="caption left-align">
+			                <h5 class="black-text">Movie Pairings</h5>
+			            </div>
+			        </li>
+			        <li>
+			            <img src="imgs/settings.png">
+			            <div class="caption left-align">
+			                <h5 class="black-text">Settings Page</h3>
 			            </div>
 			        </li>
 			    </ul>
@@ -39,7 +65,7 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row" id="About">
 	<div class="col s8 offset-s2">
 		<div class="card-panel hoverable grey lighten-4">
 			<h3 class="center-align">About</h3>
@@ -47,31 +73,68 @@
 			<div class="divider"></div>
 
 			<p class="center-align">
-				Twovie Time is an Android App that will take two Movies, Genres, or a Movie and a Genre.
+				Has your family ever wanted to go see a movie but couldn't agree on which movie to see? Then this app is for you.<br>
+				Twovie Times is Android app that will help find movie pairs that are within the same time frame, so your family can goto a theater at the same time and see different movies without much waiting. How it works is it uses your location to list all theaters in a five mile radius around you. It prompts the user to select on of the theaters found. It then asks the user to select a day for the movie times, and it will take two Movies, Genres, or a Movie and a Genre. Once these have been selected, the app provides a list of movie pairs that have a thirty minute tolerance corresponding to start and end time. This results in a family being able to see two different movies but leave for the theater at the same time.<br>
+				Looking for movies in a different location or want larger than five mile radius? We hae you covered, there is a settings screen that allows you to change the search radius as well as the zip code.
 			</p>
 		</div>
 	</div>
 </div>
 
-<div class="row">
+
+<div class="row" id="Download">
 	<div class="col s8 offset-s2">
 		<div class="card-panel hoverable grey lighten-4">
 			<h3 class="center-align">Download</h3>
 
 			<div class="divider"></div>
-
-		</div>
-	</div>
+			<br>
+			<div class="center-align">
+				<a class="modal-trigger waves-effect waves-light btn center-align" href="#modal1">Download</a>
+			</div>
+			  <!-- Modal Structure -->
+			  <div id="modal1" class="modal modal-fixed-footer">
+			    <div class="modal-content">
+			     	<h4>Install Instructions</h4>
+					<div class="divider"></div>
+			     	<p>To install this apk file to your Android device use the following steps:
+				     	<ul class="collection">
+				     		<li class="collection-item">Connect your device to your computer via USB, make sure the device is set to be used as <a href="http://www.device-recovery.com/how-to-connect-android-devices-to-pc-with-usb-mass-storage-mode" target="_blank">USB storage</a></li>
+				     		<li class="collection-item">Copy twovietimes.apk to your device's storage.</li>
+				     		<li class="collection-item">Disconnect your device from the computer.</li>
+				     		<li class="collection-item">Make sure unknown sources is allowed. To check goto Settings -> Applications -> Unknown Sources</li>
+				     		<li class="collection-item">Use whatever file browser app you have installed and navigate to where you copied the .apk file. Click it, and install the app.</li>
+				     	</ul>
+			     	</p>
+			    </div>
+			    <div class="modal-footer">
+			      <a href="twovietimes.apk" class="modal-action modal-close waves-effect waves-green btn-flat center-align">Download</a>
+			    </div>
+			  </div>
+				</div>
+			</div>
 </div>
 
-<div class="row">
+<div class="row" id="developers">
 	<div class="col s8 offset-s2">
 		<div class="card-panel hoverable grey lighten-4">
 			<h3 class="center-align">Developers</h3>
 
 			<div class="divider"></div>
 
-			<p class="center-align">Twovie Times is an App developed by three Mines students: <b>Alex Anderson, Steve Hamrick, and Eric Dattore</b>. It was created for the class CSCI-448: Mobile Applications.</p>
+			<p class="center-align">Twovie Times is an App developed by three Colorado School of Mines students: <b><a href="https://github.com/andersonalex" target="_blank">Alex Anderson</a>, <a href="https://github.com/shamrickus" target="_blank">Steve Hamrick</a></b>, and <b><a href="https://github.com/eld" target="_blank">Eric Dattore</a></b>. It was created for the class CSCI-448: Mobile Applications.</p>
+		</div>
+	</div>
+</div>
+
+<div class="row" id="source">
+	<div class="col s8 offset-s2">
+		<div class="card-panel hoverable grey lighten-4">
+			<h3 class="center-align">Source Code</h3>
+
+			<div class="divider"></div>
+
+			<p class="center-align">Since this is a school project, we are unable to publicly make the source code available. If you wish to see the source code (and are not in the Mobile Applications class), feel free to shoot an email to <a href="mailto:shamrickus@gmail.com">shamrickus@gmail.com</a></p>
 		</div>
 	</div>
 </div>
@@ -83,7 +146,21 @@
 
 <script>
 	$(document).ready(function () {
-		$('.slider').slider({full_width: false});
+		$('.slider').slider({height: 533});
+		 $('.modal-trigger').leanModal();
+
+		$('a[href*="#"]:not([href="#"])').click(function() {
+			if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+			  var target = $(this.hash);
+			  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+			  if (target.length) {
+			    $('html, body').animate({
+			      scrollTop: target.offset().top
+			    }, 1150);
+			    return false;
+			  }
+			}
+		});
 	});
 </script>   
 </body>
